@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#1a1a2e"/>
+  <!-- Paw pad (center) -->
+  <ellipse cx="256" cy="320" rx="80" ry="65" fill="#ffffff"/>
+  <!-- Toe beans -->
+  <ellipse cx="175" cy="230" rx="38" ry="45" fill="#2E7D32"/>
+  <ellipse cx="256" cy="195" rx="38" ry="45" fill="#F9A825"/>
+  <ellipse cx="337" cy="230" rx="38" ry="45" fill="#1565C0"/>
+  <!-- Small red accent on the main pad -->
+  <circle cx="256" cy="310" r="20" fill="#C62828" opacity="0.6"/>
+</svg>
