@@ -58,14 +58,22 @@
 - Hero section with tagline and "Get Started" call-to-action linking to the app
 - "How It Works" 3-step explainer
 - Color guide showing all 4 signals with descriptions
-- Email capture form with placeholder Google Form URL (swap in real URL when ready)
-- Setup instructions in HTML comments for wiring Google Form
+- "Sign Up Now" button links to Google Form for full signup
+- Google Form URL: https://docs.google.com/forms/d/e/1FAIpQLSezAI21JHG479qSRN5fD5jKz07QdKBETKEnd-i6aN3NU_euLw/viewform
 - Footer with link to the app
 - Mobile-responsive, matches app's dark theme
-- No JavaScript required — pure HTML/CSS for fast loading
+- No JavaScript required — pure HTML/CSS (Cascading Style Sheets) for fast loading
+
+### Deployment — COMPLETE
+- GitHub repo: https://github.com/charliegrippo/paw-signal
+- Deployed to GitHub Pages via gh-pages package
+- Deploy command: npm run deploy (builds app + copies landing page to dist/)
+- GitHub CLI (Command Line Interface) installed and authenticated
+- App URL: https://charliegrippo.github.io/paw-signal/
+- Landing URL: https://charliegrippo.github.io/paw-signal/landing/
 
 ### All Files
-- vite.config.ts — Vite config with React, Tailwind, PWA (Progressive Web App) plugins
+- vite.config.ts — Vite config with React, Tailwind, PWA (Progressive Web App) plugins (base: /paw-signal/)
 - index.html — Mobile-optimized HTML with PWA meta tags
 - src/index.css — Tailwind import + global styles
 - src/main.tsx — App entry point
@@ -77,12 +85,12 @@
 - src/components/ProfileScreen.tsx — Dog name + default status editor
 - src/components/AboutScreen.tsx — Color guide with all 4 statuses
 - src/components/ShareScreen.tsx — Web Share API + copy link + QR code fallback
-- landing/index.html — Landing page with email capture
+- landing/index.html — Landing page with Google Form signup
 - landing/landing.css — Landing page styles
 - public/paw-icon.svg — App icon (paw with 4 signal colors)
-- package.json — Dependencies and scripts
+- package.json — Dependencies, scripts, deploy command
 
-## Phase 1 Status: ALL USER STORIES COMPLETE
+## Phase 1 Status: ALL USER STORIES COMPLETE + DEPLOYED
 - US-001 ✅ Landing Page with Email Capture
 - US-002 ✅ Core Signal App (4 Colors)
 - US-003 ✅ Basic Dog Profile
@@ -91,8 +99,12 @@
 - US-006 ⏭️ Analytics Integration (skipped for now)
 - US-007 ✅ PWA (Progressive Web App) Support
 
+## To Redeploy
+Run: npm run deploy
+
 ## Next Steps
-- Create a Google Form for email capture and update landing/index.html with the form URL
-- Deploy to GitHub Pages
-- Begin user testing
+- Enable GitHub Pages in repo settings (Branch: gh-pages, folder: / root)
+- Test live URLs on phone
+- Share with initial users for feedback
+- Add analytics (US-006) when ready
 ---
