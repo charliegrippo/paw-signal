@@ -1,0 +1,98 @@
+# Paw Signal - Progress Log
+
+## Session 1 - 2026-02-15
+- Project scaffolded
+- PRD finalized
+
+## Session 2 - 2026-02-16
+### US-002: Core Signal App (4 Colors) — COMPLETE
+- Scaffolded React + Vite + TypeScript project with Tailwind CSS
+- Created signal data definitions with all 4 colors:
+  - Green (#2E7D32) — Friendly
+  - Yellow (#F9A825) — Caution / Quirks
+  - Blue (#1565C0) — Working / In Training
+  - Red (#C62828) — Do Not Approach
+- Built HomeScreen component with 4 color buttons
+- Built SignalScreen component — full-screen color, large status label, guidance text
+- Tapping signal screen returns to home view
+- TypeScript typecheck passes
+- Production build succeeds
+
+### US-003: Basic Dog Profile — COMPLETE
+- Created ProfileScreen with dog name input and default status color picker
+- Profile data persists in localStorage across sessions
+- Profile accessible via gear icon on home screen
+- Home screen shows personalized greeting when dog name is set (e.g., "Signaling for Buddy")
+- Radio-style color picker with visual selection indicator
+- Auto-save on change + explicit "Save Profile" button with confirmation
+- TypeScript typecheck passes
+- Production build succeeds
+
+### US-004: About / Color Guide Screen — COMPLETE
+- Created AboutScreen listing all 4 statuses with color, label, meaning, and guidance
+- Ordered by urgency: Red, Yellow, Blue, Green
+- Each status shown as a card with colored header bar + details section
+- Accessible from home screen via "What do the colors mean?" link
+- TypeScript typecheck passes
+- Production build succeeds
+
+### US-005: Share Functionality — COMPLETE
+- Share button (↗) added to home screen header next to gear icon
+- Native Web Share API (Application Programming Interface) triggered when browser supports it
+- Fallback: copyable link with "Copy" button + clipboard feedback
+- QR code generated via qrcode.react library for scan-to-share
+- TypeScript typecheck passes
+- Production build succeeds
+
+### US-007: PWA (Progressive Web App) Support — COMPLETE
+- Web app manifest with app name, icons (SVG), theme color (#1a1a2e), background color
+- Service worker via vite-plugin-pwa + Workbox: precaches 7 entries for offline use
+- Standalone display mode — launches without browser chrome when installed
+- Apple mobile web app meta tags for iOS support
+- registerSW.js auto-registers service worker on load
+- TypeScript typecheck passes
+- Production build succeeds
+
+### US-001: Landing Page with Email Capture — COMPLETE
+- Standalone HTML + CSS (Cascading Style Sheets) landing page in landing/ folder
+- Hero section with tagline and "Get Started" call-to-action linking to the app
+- "How It Works" 3-step explainer
+- Color guide showing all 4 signals with descriptions
+- Email capture form with placeholder Google Form URL (swap in real URL when ready)
+- Setup instructions in HTML comments for wiring Google Form
+- Footer with link to the app
+- Mobile-responsive, matches app's dark theme
+- No JavaScript required — pure HTML/CSS for fast loading
+
+### All Files
+- vite.config.ts — Vite config with React, Tailwind, PWA (Progressive Web App) plugins
+- index.html — Mobile-optimized HTML with PWA meta tags
+- src/index.css — Tailwind import + global styles
+- src/main.tsx — App entry point
+- src/App.tsx — Screen routing (home ↔ signal ↔ profile ↔ about ↔ share)
+- src/data/signals.ts — Signal definitions (4 colors, labels, guidance)
+- src/data/profile.ts — Dog profile type + localStorage load/save
+- src/components/HomeScreen.tsx — Home screen with signal buttons + profile/about/share nav
+- src/components/SignalScreen.tsx — Full-screen signal display
+- src/components/ProfileScreen.tsx — Dog name + default status editor
+- src/components/AboutScreen.tsx — Color guide with all 4 statuses
+- src/components/ShareScreen.tsx — Web Share API + copy link + QR code fallback
+- landing/index.html — Landing page with email capture
+- landing/landing.css — Landing page styles
+- public/paw-icon.svg — App icon (paw with 4 signal colors)
+- package.json — Dependencies and scripts
+
+## Phase 1 Status: ALL USER STORIES COMPLETE
+- US-001 ✅ Landing Page with Email Capture
+- US-002 ✅ Core Signal App (4 Colors)
+- US-003 ✅ Basic Dog Profile
+- US-004 ✅ About / Color Guide Screen
+- US-005 ✅ Share Functionality
+- US-006 ⏭️ Analytics Integration (skipped for now)
+- US-007 ✅ PWA (Progressive Web App) Support
+
+## Next Steps
+- Create a Google Form for email capture and update landing/index.html with the form URL
+- Deploy to GitHub Pages
+- Begin user testing
+---

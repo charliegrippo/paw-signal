@@ -1,0 +1,17 @@
+/* Import Tailwind CSS */
+@import 'tailwindcss';
+
+/* Global styles — dark background, no scroll bounce, full height */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #1a1a2e;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
