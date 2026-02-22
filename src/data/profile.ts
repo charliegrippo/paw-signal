@@ -25,7 +25,8 @@ export function loadProfile(): DogProfile {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
-      return JSON.parse(stored) as DogProfile
+      // Merge with defaults so old profiles missing new fields don't crash
+      return { ...emptyProfile, ...JSON.parse(stored) }
     }
   } catch {
     // If localStorage is corrupted, start fresh
