@@ -4,15 +4,19 @@
 const STORAGE_KEY = 'paw-signal-profile'
 
 export interface DogProfile {
-  dogName: string
-  breed: string // optional — can be empty
+  ownerFirstName: string
+  email: string
+  phone: string
+  dogName: string // optional — can be empty
   defaultSignalId: string // matches Signal.id (green, yellow, blue, red)
 }
 
 // Default empty profile for first-time users
 const emptyProfile: DogProfile = {
+  ownerFirstName: '',
+  email: '',
+  phone: '',
   dogName: '',
-  breed: '',
   defaultSignalId: 'green',
 }
 
@@ -34,8 +38,12 @@ export function saveProfile(profile: DogProfile): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(profile))
 }
 
-// Check if a valid profile exists (dog name is required)
+// Check if a valid profile exists (owner first name, email, phone are required)
 export function hasProfile(): boolean {
   const profile = loadProfile()
-  return profile.dogName.trim().length > 0
+  return (
+    profile.ownerFirstName.trim().length > 0 &&
+    profile.email.trim().length > 0 &&
+    profile.phone.trim().length > 0
+  )
 }
