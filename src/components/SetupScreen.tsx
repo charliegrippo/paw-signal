@@ -1,72 +1,67 @@
 import { useState } from 'react'
 import { signals } from '../data/signals'
-import { loadProfile, saveProfile, type DogProfile } from '../data/profile'
+import { saveProfile, type DogProfile } from '../data/profile'
 
-// ProfileScreen — lets the user edit their dog's name, breed, and default signal
-// Dog name is required — save button is disabled without it
+// SetupScreen — first-time onboarding that collects dog name (required),
+// breed (optional), and default status color (optional) before allowing
+// access to the rest of the app
 
-interface ProfileScreenProps {
-  onBack: () => void
+interface SetupScreenProps {
+  onComplete: () => void
 }
 
-export default function ProfileScreen({ onBack }: ProfileScreenProps) {
-  const [profile, setProfile] = useState<DogProfile>(loadProfile)
-  const [saved, setSaved] = useState(false)
-  // Track whether user has tried to save with empty name
+export default function SetupScreen({ onComplete }: SetupScreenProps) {
+  const [profile, setProfile] = useState<DogProfile>({
+    dogName: '',
+    breed: '',
+    defaultSignalId: 'green',
+  })
+  // Track whether user has tried to submit with empty name
   const [showError, setShowError] = useState(false)
 
   const nameIsValid = profile.dogName.trim().length > 0
 
-  // Update dog name as the user types
   function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSaved(false)
     setShowError(false)
     setProfile((prev) => ({ ...prev, dogName: e.target.value }))
   }
 
-  // Update breed as the user types
   function handleBreedChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSaved(false)
     setProfile((prev) => ({ ...prev, breed: e.target.value }))
   }
 
-  // Update default signal when a color is tapped
   function handleSignalSelect(signalId: string) {
-    setSaved(false)
     setProfile((prev) => ({ ...prev, defaultSignalId: signalId }))
   }
 
-  // Save with validation — dog name is required
-  function handleSave() {
+  function handleContinue() {
     if (!nameIsValid) {
       setShowError(true)
       return
     }
     saveProfile(profile)
-    setSaved(true)
+    onComplete()
   }
 
   return (
     <div className="flex flex-col h-full w-full px-6 py-8">
-      {/* Header with back button (44x44 touch target) */}
-      <div className="flex items-center mb-8">
-        <button
-          onClick={onBack}
-          className="w-11 h-11 flex items-center justify-center rounded-full bg-white/10 text-white text-lg border-none cursor-pointer mr-3"
-          aria-label="Go back to home"
-        >
-          ←
-        </button>
-        <h1 className="text-2xl font-bold text-white">Dog Profile</h1>
+      {/* Welcome header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-white tracking-tight">
+          Welcome to Paw Signal
+        </h1>
+        <p className="text-gray-400 mt-2 text-sm">
+          Tell us about your dog to get started
+        </p>
       </div>
 
       {/* Dog name input — required */}
       <div className="mb-6">
-        <label className="block text-gray-400 text-sm mb-2" htmlFor="dog-name">
+        <label className="block text-gray-400 text-sm mb-2" htmlFor="setup-dog-name">
           Dog's Name <span className="text-red-400">*</span>
         </label>
         <input
-          id="dog-name"
+          id="setup-dog-name"
           type="text"
           value={profile.dogName}
           onChange={handleNameChange}
@@ -77,6 +72,7 @@ export default function ProfileScreen({ onBack }: ProfileScreenProps) {
               : 'border-white/20 focus:border-white/50'
           }`}
           maxLength={30}
+          autoFocus
         />
         {showError && !nameIsValid && (
           <p className="text-red-400 text-sm mt-1">Dog name is required</p>
@@ -85,11 +81,11 @@ export default function ProfileScreen({ onBack }: ProfileScreenProps) {
 
       {/* Breed input — optional */}
       <div className="mb-6">
-        <label className="block text-gray-400 text-sm mb-2" htmlFor="breed">
+        <label className="block text-gray-400 text-sm mb-2" htmlFor="setup-breed">
           Breed <span className="text-gray-500">(optional)</span>
         </label>
         <input
-          id="breed"
+          id="setup-breed"
           type="text"
           value={profile.breed}
           onChange={handleBreedChange}
@@ -99,10 +95,10 @@ export default function ProfileScreen({ onBack }: ProfileScreenProps) {
         />
       </div>
 
-      {/* Default signal color picker */}
+      {/* Default signal color picker — optional, defaults to green */}
       <div className="mb-8">
         <label className="block text-gray-400 text-sm mb-2">
-          Default Status
+          Default Status <span className="text-gray-500">(optional)</span>
         </label>
         <div className="flex flex-col gap-3">
           {signals.map((signal) => {
@@ -118,7 +114,6 @@ export default function ProfileScreen({ onBack }: ProfileScreenProps) {
                 aria-label={`Set default to ${signal.label}`}
                 aria-pressed={isSelected}
               >
-                {/* Selection indicator */}
                 <span
                   className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
                     isSelected ? 'border-white' : 'border-white/40'
@@ -128,8 +123,6 @@ export default function ProfileScreen({ onBack }: ProfileScreenProps) {
                     <span className="w-2.5 h-2.5 rounded-full bg-white" />
                   )}
                 </span>
-
-                {/* Signal label */}
                 <span
                   className="text-base font-semibold"
                   style={{ color: signal.textColor }}
@@ -142,9 +135,9 @@ export default function ProfileScreen({ onBack }: ProfileScreenProps) {
         </div>
       </div>
 
-      {/* Save button — disabled until dog name is filled */}
+      {/* Continue button — disabled until dog name is filled */}
       <button
-        onClick={handleSave}
+        onClick={handleContinue}
         disabled={!nameIsValid}
         className={`mt-auto py-4 rounded-xl font-bold text-lg border-none transition-colors ${
           nameIsValid
@@ -152,7 +145,7 @@ export default function ProfileScreen({ onBack }: ProfileScreenProps) {
             : 'bg-white/20 text-gray-500 cursor-not-allowed'
         }`}
       >
-        {saved ? 'Saved!' : 'Save Profile'}
+        Continue
       </button>
     </div>
   )

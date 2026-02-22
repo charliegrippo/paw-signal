@@ -54,14 +54,14 @@ export default function ShareScreen({ onBack }: ShareScreenProps) {
 
   return (
     <div className="flex flex-col h-full w-full px-6 py-8">
-      {/* Header with back button */}
+      {/* Header with back button (44x44 touch target) */}
       <div className="flex items-center mb-8">
         <button
           onClick={onBack}
-          className="text-gray-400 text-sm border-none bg-transparent cursor-pointer mr-4"
+          className="w-11 h-11 flex items-center justify-center rounded-full bg-white/10 text-white text-lg border-none cursor-pointer mr-3"
           aria-label="Go back to home"
         >
-          ← Back
+          ←
         </button>
         <h1 className="text-2xl font-bold text-white">Share Paw Signal</h1>
       </div>

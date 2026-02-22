@@ -99,12 +99,61 @@
 - US-006 ⏭️ Analytics Integration (skipped for now)
 - US-007 ✅ PWA (Progressive Web App) Support
 
+## Session 3 - 2026-02-22
+
+### FIX 1: Forced Profile Flow — COMPLETE
+- First-time users (no profile in localStorage) now land on a setup/onboarding screen
+- Setup collects: Dog Name (required), Breed (optional), Default Status color (optional)
+- Continue button is disabled/grayed out until Dog Name is filled in
+- After saving, user proceeds to home screen with signal buttons
+- Returning users with a saved profile skip straight to home
+- No way to reach signal buttons without completing profile
+- Added `hasProfile()` helper to profile.ts
+- Created new SetupScreen.tsx component
+
+### FIX 3: Profile Save Validation — COMPLETE
+- Dog Name field marked as required with red asterisk
+- Save button disabled until Dog Name has at least 1 character
+- Red border + error message shown if user tries to save with empty name
+- Breed field added to profile (optional)
+- Both SetupScreen and ProfileScreen share the same validation behavior
+
+### FIX 2: Back Button Navigation — COMPLETE
+- Profile, About, and Share screens now have a round 44x44px back button (easy mobile tap target)
+- Signal screen has a ✕ close button in top-left corner that goes straight home
+- Signal screen tap-anywhere-to-go-back still works (in solid mode)
+- All back buttons are visually consistent across screens
+
+### NEW FEATURE: Blinking Signal Mode — COMPLETE
+- Tapping a color on home screen starts blinking immediately (1s on, 1s off against black)
+- Camera flash/LED (torch) blinks in sync with the screen when device supports it
+- Camera permission requested on first use; graceful fallback if denied
+- First tap on signal screen: blinking stops, solid color locks in, torch off
+- Second tap: returns to home screen
+- Hint text updates: "Tap to lock color" during blink, "Tap to go back" when solid
+- Camera stream cleaned up on unmount (no resource leaks)
+
+### Files Changed
+- src/data/profile.ts — Added breed field, hasProfile() helper
+- src/App.tsx — Added setup screen routing, gates app behind profile completion
+- src/components/SetupScreen.tsx — NEW: first-time onboarding screen
+- src/components/ProfileScreen.tsx — Added breed field, save validation, larger back button
+- src/components/SignalScreen.tsx — Blinking mode + torch + close button
+- src/components/AboutScreen.tsx — Larger back button (44x44 touch target)
+- src/components/ShareScreen.tsx — Larger back button (44x44 touch target)
+- CLAUDE.md — NEW: project context for Claude Code
+
+## Task Sheet Status: ALL FIXES + NEW FEATURE COMPLETE
+- FIX 1 ✅ Forced Profile Flow
+- FIX 2 ✅ Back Button Navigation
+- FIX 3 ✅ Profile Save Validation
+- NEW  ✅ Blinking Signal Mode
+
 ## To Redeploy
 Run: npm run deploy
 
 ## Next Steps
-- Enable GitHub Pages in repo settings (Branch: gh-pages, folder: / root)
 - Test live URLs on phone
-- Share with initial users for feedback
+- Share with users for feedback
 - Add analytics (US-006) when ready
 ---

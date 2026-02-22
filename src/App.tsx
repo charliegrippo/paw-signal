@@ -4,19 +4,29 @@ import SignalScreen from './components/SignalScreen'
 import ProfileScreen from './components/ProfileScreen'
 import AboutScreen from './components/AboutScreen'
 import ShareScreen from './components/ShareScreen'
+import SetupScreen from './components/SetupScreen'
 import type { Signal } from './data/signals'
-import { loadProfile } from './data/profile'
+import { loadProfile, hasProfile } from './data/profile'
 
-// App — manages navigation between home, signal, and profile screens
-// Uses simple state-based routing (no router library needed)
+// App — manages navigation between screens
+// First-time users must complete setup before accessing the app
 
-type Screen = 'home' | 'signal' | 'profile' | 'about' | 'share'
+type Screen = 'setup' | 'home' | 'signal' | 'profile' | 'about' | 'share'
 
 function App() {
-  const [screen, setScreen] = useState<Screen>('home')
+  // If no valid profile exists, force the setup screen
+  const [screen, setScreen] = useState<Screen>(() =>
+    hasProfile() ? 'home' : 'setup'
+  )
   const [activeSignal, setActiveSignal] = useState<Signal | null>(null)
   // Load dog name for the home screen greeting
   const [dogName, setDogName] = useState(() => loadProfile().dogName)
+
+  // Setup complete — save happened in SetupScreen, now go to home
+  const handleSetupComplete = useCallback(() => {
+    setDogName(loadProfile().dogName)
+    setScreen('home')
+  }, [])
 
   // User tapped a signal button — show the full-screen color
   const handleSelectSignal = useCallback((signal: Signal) => {
@@ -63,7 +73,9 @@ function App() {
 
   return (
     <div className="h-full w-full">
-      {screen === 'signal' && activeSignal ? (
+      {screen === 'setup' ? (
+        <SetupScreen onComplete={handleSetupComplete} />
+      ) : screen === 'signal' && activeSignal ? (
         <SignalScreen signal={activeSignal} onBack={handleBackFromSignal} />
       ) : screen === 'profile' ? (
         <ProfileScreen onBack={handleBackFromProfile} />
