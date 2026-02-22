@@ -1,22 +1,68 @@
-import { signals } from '../data/signals'
+import PawIcon from './PawIcon'
 
-// AboutScreen — color guide listing all 4 statuses with color, label, meaning, and guidance
-// Ordered by urgency: Red, Yellow, Blue, Green (per PRD)
+// AboutScreen — hub for story, feedback, sharing, and expanded color guide
 
 interface AboutScreenProps {
   onBack: () => void
 }
 
-// Reorder signals by urgency: Red first, then Yellow, Blue, Green
-const urgencyOrder = ['red', 'yellow', 'blue', 'green']
-const sortedSignals = [...signals].sort(
-  (a, b) => urgencyOrder.indexOf(a.id) - urgencyOrder.indexOf(b.id)
-)
+// Color guide data with expanded descriptions
+const colorGuide = [
+  {
+    hex: '#2E7D32',
+    name: 'Green — Friendly',
+    meaning: 'Happy to meet other dogs and people. Come say hi!',
+    why: "Green means 'go' — just like a green light. It's the universal sign that everything is safe and welcoming.",
+  },
+  {
+    hex: '#F9A825',
+    name: 'Yellow — Caution / Quirks',
+    meaning: 'Nervous, unpredictable, or has quirks. Approach slowly and ask first.',
+    why: "Yellow means 'slow down' — the same instinct you feel at a yellow traffic light. This dog might be fine, but read the room before approaching.",
+  },
+  {
+    hex: '#1565C0',
+    name: 'Blue — Working / In Training',
+    meaning: "This dog is focused on a task. Please don't distract them.",
+    why: 'Blue signals calm, focus, and professionalism — think service vests and working dog gear. This dog has a job to do.',
+  },
+  {
+    hex: '#C62828',
+    name: 'Red — Do Not Approach',
+    meaning: 'Reactive or aggressive. Give this dog wide space.',
+    why: "Red means 'stop' — the most powerful warning color there is. No exceptions. Cross the street, change your path, give them room.",
+  },
+]
+
+// Share the app via native share API or clipboard fallback
+const SHARE_URL = 'https://charliegrippo.github.io/paw-signal/landing/'
+const SHARE_TEXT = "Check out Paw Signal — a quick way to show your dog's temperament to other walkers!"
+
+async function handleShare() {
+  if (typeof navigator.share === 'function') {
+    try {
+      await navigator.share({ title: 'Paw Signal', text: SHARE_TEXT, url: SHARE_URL })
+    } catch {
+      // User cancelled
+    }
+  } else {
+    try {
+      await navigator.clipboard.writeText(SHARE_URL)
+      alert('Link copied to clipboard!')
+    } catch {
+      // Clipboard not available
+    }
+  }
+}
+
+function handleFeedback() {
+  window.location.href = 'mailto:charleygrippo@gmail.com?subject=Paw%20Signal%20Feedback'
+}
 
 export default function AboutScreen({ onBack }: AboutScreenProps) {
   return (
     <div className="flex flex-col h-full w-full px-6 py-8 overflow-y-auto">
-      {/* Header with back button (44x44 touch target) */}
+      {/* Back button (44x44 touch target) */}
       <div className="flex items-center mb-6">
         <button
           onClick={onBack}
@@ -25,45 +71,106 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
         >
           ←
         </button>
-        <h1 className="text-2xl font-bold text-white">Color Guide</h1>
       </div>
 
-      <p className="text-gray-400 text-sm mb-6">
-        Each color communicates a dog's temperament at a glance. Ordered from
-        most urgent to least.
+      {/* Paw icon centered */}
+      <div className="flex justify-center mb-4">
+        <PawIcon size={44} />
+      </div>
+
+      {/* Our Story section */}
+      <h2
+        className="text-center font-bold text-white mb-3"
+        style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 22 }}
+      >
+        Our Story
+      </h2>
+
+      <p
+        className="text-center mb-3 max-w-sm mx-auto"
+        style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 14, color: '#bbbbbb' }}
+      >
+        Paw Signal was <span className="font-semibold text-white">born from loss.</span>{' '}
+        The creator of this app lost his dog to a sudden dog&#8209;on&#8209;dog attack — no
+        warning signs, no way to know.{' '}
+        <span className="font-semibold text-white">No one should ever experience that.</span>{' '}
+        This app exists so every walker can see what's coming and every dog gets the space they need.
       </p>
 
-      {/* Signal cards — each shows color swatch, label, meaning, and guidance */}
-      <div className="flex flex-col gap-4">
-        {sortedSignals.map((signal) => (
-          <div
-            key={signal.id}
-            className="rounded-xl overflow-hidden"
-            style={{ border: `2px solid ${signal.hex}` }}
-          >
-            {/* Color header bar with label */}
-            <div
-              className="px-4 py-3 flex items-center gap-3"
-              style={{ backgroundColor: signal.hex }}
-            >
-              <span
-                className="text-lg font-bold"
-                style={{ color: signal.textColor }}
-              >
-                {signal.label}
-              </span>
-            </div>
+      <p
+        className="text-center italic text-white mb-6"
+        style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 15 }}
+      >
+        One color. One signal.
+        <br />
+        A safer walk for everyone.
+      </p>
 
-            {/* Meaning and guidance details */}
-            <div className="px-4 py-3 bg-white/5">
-              <p className="text-white text-sm mb-2">
-                <span className="text-gray-400 font-medium">Meaning: </span>
-                {signal.meaning}
-              </p>
-              <p className="text-white text-sm">
-                <span className="text-gray-400 font-medium">Guidance: </span>
-                {signal.guidance}
-              </p>
+      {/* Action card — feedback + share */}
+      <div
+        className="rounded-[14px] px-5 py-4 mb-6"
+        style={{ backgroundColor: '#1e1e1e', border: '1px solid #2a2a2a' }}
+      >
+        <p
+          className="uppercase mb-3"
+          style={{ fontSize: 12, color: '#888', letterSpacing: 1.5 }}
+        >
+          Help Us Spread the Word
+        </p>
+        <div className="flex gap-3">
+          {/* Feedback button */}
+          <button
+            onClick={handleFeedback}
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-full bg-white/10 text-white text-sm font-semibold border-none cursor-pointer active:scale-[0.98] transition-transform"
+          >
+            <span>✉</span> Feedback
+          </button>
+          {/* Share button */}
+          <button
+            onClick={handleShare}
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-full bg-white/10 text-white text-sm font-semibold border-none cursor-pointer active:scale-[0.98] transition-transform"
+          >
+            <span>↗</span> Share
+          </button>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="w-full mb-5" style={{ height: 1, backgroundColor: '#2a2a2a' }} />
+
+      {/* Color Guide header */}
+      <p
+        className="text-center uppercase mb-5"
+        style={{ fontSize: 12, color: '#666', letterSpacing: 1.5 }}
+      >
+        Color Guide
+      </p>
+
+      {/* Four color entries */}
+      <div className="flex flex-col gap-4 pb-4">
+        {colorGuide.map((entry) => (
+          <div key={entry.hex} className="flex gap-3">
+            {/* Color swatch */}
+            <div
+              className="shrink-0"
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 10,
+                backgroundColor: entry.hex,
+              }}
+            />
+            {/* Text lines */}
+            <div className="flex flex-col">
+              <span className="text-white font-bold" style={{ fontSize: 14 }}>
+                {entry.name}
+              </span>
+              <span style={{ fontSize: 12.5, color: '#cccccc' }}>
+                {entry.meaning}
+              </span>
+              <span className="italic" style={{ fontSize: 11.5, color: '#777777' }}>
+                {entry.why}
+              </span>
             </div>
           </div>
         ))}

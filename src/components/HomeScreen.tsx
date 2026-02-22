@@ -1,6 +1,7 @@
 import { signals, type Signal } from '../data/signals'
+import PawIcon from './PawIcon'
 
-// HomeScreen — displays the 4 signal color buttons
+// HomeScreen — displays the paw icon, 4 signal color buttons, and navigation
 // Tapping a button triggers onSelectSignal to show the full-screen signal
 
 interface HomeScreenProps {
@@ -14,17 +15,20 @@ interface HomeScreenProps {
 export default function HomeScreen({ onSelectSignal, onOpenProfile, onOpenAbout, onOpenShare, dogName }: HomeScreenProps) {
   return (
     <div className="flex flex-col h-full w-full px-6 py-8">
-      {/* Header — app title + profile button */}
+      {/* Header — paw icon + app title + profile button */}
       <div className="flex items-start justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">
-            Paw Signal
-          </h1>
-          <p className="text-gray-400 mt-2 text-sm">
-            {dogName
-              ? `Signaling for ${dogName}`
-              : "Tap a color to signal your dog's status"}
-          </p>
+        <div className="flex items-center gap-3">
+          <PawIcon size={48} />
+          <div>
+            <h1 className="text-3xl font-bold text-white tracking-tight">
+              Paw Signal
+            </h1>
+            <p className="text-gray-400 mt-1 text-sm">
+              {dogName
+                ? `Signaling for ${dogName}`
+                : "Tap a color to signal your dog's status"}
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-1">
           <button

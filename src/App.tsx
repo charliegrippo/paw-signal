@@ -5,22 +5,30 @@ import ProfileScreen from './components/ProfileScreen'
 import AboutScreen from './components/AboutScreen'
 import ShareScreen from './components/ShareScreen'
 import SetupScreen from './components/SetupScreen'
+import StoryScreen from './components/StoryScreen'
 import type { Signal } from './data/signals'
 import { loadProfile, hasProfile } from './data/profile'
 
 // App — manages navigation between screens
-// First-time users must complete setup before accessing the app
+// First-time users see: StoryScreen → SetupScreen → HomeScreen
+// Returning users go straight to HomeScreen
 
-type Screen = 'setup' | 'home' | 'signal' | 'profile' | 'about' | 'share'
+type Screen = 'story' | 'setup' | 'home' | 'signal' | 'profile' | 'about' | 'share'
 
 function App() {
-  // If no valid profile exists, force the setup screen
+  const profileExists = hasProfile()
+  // New users start at story screen, returning users go straight to home
   const [screen, setScreen] = useState<Screen>(() =>
-    hasProfile() ? 'home' : 'setup'
+    profileExists ? 'home' : 'story'
   )
   const [activeSignal, setActiveSignal] = useState<Signal | null>(null)
   // Load dog name for the home screen greeting
   const [dogName, setDogName] = useState(() => loadProfile().dogName)
+
+  // Story screen Continue → proceed to setup
+  const handleStoryContinue = useCallback(() => {
+    setScreen('setup')
+  }, [])
 
   // Setup complete — save happened in SetupScreen, now go to home
   const handleSetupComplete = useCallback(() => {
@@ -73,7 +81,9 @@ function App() {
 
   return (
     <div className="h-full w-full">
-      {screen === 'setup' ? (
+      {screen === 'story' ? (
+        <StoryScreen onContinue={handleStoryContinue} />
+      ) : screen === 'setup' ? (
         <SetupScreen onComplete={handleSetupComplete} />
       ) : screen === 'signal' && activeSignal ? (
         <SignalScreen signal={activeSignal} onBack={handleBackFromSignal} />
