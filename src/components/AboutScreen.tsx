@@ -1,6 +1,6 @@
 import PawIcon from './PawIcon'
 
-// AboutScreen — hub for story, feedback, sharing, and expanded color guide
+// AboutScreen — hub with color guide on top, signal modes explanation, then Our Story below
 
 interface AboutScreenProps {
   onBack: () => void
@@ -78,7 +78,83 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
         <PawIcon size={44} />
       </div>
 
-      {/* Our Story section */}
+      {/* ===== COLOR GUIDE (top section) ===== */}
+      <p
+        className="text-center uppercase mb-5"
+        style={{ fontSize: 12, color: '#666', letterSpacing: 1.5 }}
+      >
+        Color Guide
+      </p>
+
+      <div className="flex flex-col gap-4 mb-6">
+        {colorGuide.map((entry) => (
+          <div key={entry.hex} className="flex gap-3">
+            {/* Color swatch */}
+            <div
+              className="shrink-0"
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 10,
+                backgroundColor: entry.hex,
+              }}
+            />
+            {/* Text lines */}
+            <div className="flex flex-col">
+              <span className="text-white font-bold" style={{ fontSize: 14 }}>
+                {entry.name}
+              </span>
+              <span style={{ fontSize: 12.5, color: '#cccccc' }}>
+                {entry.meaning}
+              </span>
+              <span className="italic" style={{ fontSize: 11.5, color: '#777777' }}>
+                {entry.why}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Divider */}
+      <div className="w-full mb-6" style={{ height: 1, backgroundColor: '#2a2a2a' }} />
+
+      {/* ===== SIGNAL MODES EXPLANATION ===== */}
+      <h2 className="text-center text-white font-bold text-xl mb-4">
+        Two Signal Modes
+      </h2>
+
+      <div
+        className="rounded-[14px] px-5 py-5 mb-3"
+        style={{ backgroundColor: '#1e1e1e', border: '1px solid #2a2a2a' }}
+      >
+        <p className="text-white font-bold text-lg mb-1">
+          Solid Mode
+        </p>
+        <p style={{ fontSize: 15, color: '#cccccc' }}>
+          Your screen fills with the signal color. Hold your phone up so the other walker can see it clearly. This is the default when you tap a color.
+        </p>
+      </div>
+
+      <div
+        className="rounded-[14px] px-5 py-5 mb-3"
+        style={{ backgroundColor: '#1e1e1e', border: '1px solid #2a2a2a' }}
+      >
+        <p className="text-white font-bold text-lg mb-1">
+          Pulse Mode
+        </p>
+        <p style={{ fontSize: 15, color: '#cccccc' }}>
+          Tap the screen to start pulsing. The color flashes on and off while your camera flashlight blinks in sync — visible from a distance. Tap again to stop.
+        </p>
+      </div>
+
+      <p className="text-center mb-6" style={{ fontSize: 14, color: '#888' }}>
+        Tap anywhere on the signal screen to switch between modes. Use the ✕ button to go back home.
+      </p>
+
+      {/* Divider */}
+      <div className="w-full mb-6" style={{ height: 1, backgroundColor: '#2a2a2a' }} />
+
+      {/* ===== OUR STORY (scrolls below) ===== */}
       <h2
         className="text-center font-bold text-white mb-3"
         style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 22 }}
@@ -133,47 +209,6 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
             <span>↗</span> Share
           </button>
         </div>
-      </div>
-
-      {/* Divider */}
-      <div className="w-full mb-5" style={{ height: 1, backgroundColor: '#2a2a2a' }} />
-
-      {/* Color Guide header */}
-      <p
-        className="text-center uppercase mb-5"
-        style={{ fontSize: 12, color: '#666', letterSpacing: 1.5 }}
-      >
-        Color Guide
-      </p>
-
-      {/* Four color entries */}
-      <div className="flex flex-col gap-4 pb-4">
-        {colorGuide.map((entry) => (
-          <div key={entry.hex} className="flex gap-3">
-            {/* Color swatch */}
-            <div
-              className="shrink-0"
-              style={{
-                width: 40,
-                height: 40,
-                borderRadius: 10,
-                backgroundColor: entry.hex,
-              }}
-            />
-            {/* Text lines */}
-            <div className="flex flex-col">
-              <span className="text-white font-bold" style={{ fontSize: 14 }}>
-                {entry.name}
-              </span>
-              <span style={{ fontSize: 12.5, color: '#cccccc' }}>
-                {entry.meaning}
-              </span>
-              <span className="italic" style={{ fontSize: 11.5, color: '#777777' }}>
-                {entry.why}
-              </span>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   )

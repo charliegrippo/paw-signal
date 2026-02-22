@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import type { Signal } from '../data/signals'
 
-// SignalScreen — full-screen signal with blinking mode
-// Flow: enter → blinks (screen + torch) → tap to lock solid → tap again to go home
-// Camera flash/LED blinks in sync when available
+// SignalScreen — full-screen signal display
+// Defaults to solid color. Tap toggles pulse mode (screen pulses + camera flash ON).
+// Tap again returns to solid (flash OFF). ✕ button always goes home.
 
 interface SignalScreenProps {
   signal: Signal
@@ -11,13 +11,15 @@ interface SignalScreenProps {
 }
 
 export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
-  // 'blinking' = screen + torch flash on/off every 1s, 'solid' = locked color
-  const [mode, setMode] = useState<'blinking' | 'solid'>('blinking')
-  // Whether the signal color is showing (true) or dark (false) during blink
+  // 'solid' = steady color, 'pulse' = screen pulses + torch on
+  const [mode, setMode] = useState<'solid' | 'pulse'>('solid')
+  // Whether the signal color is showing (true) or dark (false) during pulse
   const [colorOn, setColorOn] = useState(true)
 
   const streamRef = useRef<MediaStream | null>(null)
   const intervalRef = useRef<number | null>(null)
+  // Track whether we've already requested camera access
+  const torchInitialized = useRef(false)
 
   // Toggle the camera torch on or off (fire-and-forget)
   const setTorch = useCallback(async (on: boolean) => {
@@ -30,42 +32,35 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
         advanced: [{ torch: on } as MediaTrackConstraintSet],
       })
     } catch {
-      // Torch not supported or failed — screen still blinks without it
+      // Torch not supported or failed — screen still pulses without it
     }
   }, [])
 
-  // Request camera access for torch control on mount
-  useEffect(() => {
-    let cancelled = false
-
-    async function initTorch() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'environment' },
-        })
-        if (cancelled) {
-          stream.getTracks().forEach((t) => t.stop())
-          return
-        }
-        streamRef.current = stream
-      } catch {
-        // Permission denied or no camera — blinking still works without torch
-      }
+  // Request camera access for torch (called once on first pulse activation)
+  const initTorch = useCallback(async () => {
+    if (torchInitialized.current) return
+    torchInitialized.current = true
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' },
+      })
+      streamRef.current = stream
+    } catch {
+      // Permission denied or no camera — pulse still works without torch
     }
+  }, [])
 
-    initTorch()
-
-    // Clean up camera stream on unmount
+  // Clean up camera stream on unmount
+  useEffect(() => {
     return () => {
-      cancelled = true
       streamRef.current?.getTracks().forEach((t) => t.stop())
       streamRef.current = null
     }
   }, [])
 
-  // Blink loop — toggles color and torch every 1 second
+  // Pulse loop — toggles color and torch every 1 second
   useEffect(() => {
-    if (mode !== 'blinking') {
+    if (mode !== 'pulse') {
       // Solid mode — lock color on, torch off
       setColorOn(true)
       setTorch(false)
@@ -76,7 +71,8 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
       return
     }
 
-    // Start blinking: color on, then toggle every 1s
+    // Entering pulse mode — init torch if not already done, then start pulsing
+    initTorch()
     let on = true
     setColorOn(true)
     setTorch(true)
@@ -93,19 +89,15 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
         intervalRef.current = null
       }
     }
-  }, [mode, setTorch])
+  }, [mode, setTorch, initTorch])
 
-  // Tap handler — first tap locks solid, second tap goes home
+  // Tap handler — toggle between solid and pulse
   function handleTap() {
-    if (mode === 'blinking') {
-      setMode('solid')
-    } else {
-      onBack()
-    }
+    setMode((prev) => (prev === 'solid' ? 'pulse' : 'solid'))
   }
 
-  // During blink-off, show black; otherwise show signal color
-  const bgColor = mode === 'blinking' && !colorOn ? '#000000' : signal.hex
+  // During pulse-off, show black; otherwise show signal color
+  const bgColor = mode === 'pulse' && !colorOn ? '#000000' : signal.hex
   const textVisible = mode === 'solid' || colorOn
 
   return (
@@ -118,7 +110,7 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') handleTap()
       }}
-      aria-label={`${signal.label} signal. Tap to ${mode === 'blinking' ? 'lock color' : 'go back'}.`}
+      aria-label={`${signal.label} signal. Tap to ${mode === 'solid' ? 'start pulse' : 'stop pulse'}.`}
     >
       {/* Close button — always visible, goes straight home */}
       <button
@@ -132,7 +124,7 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
         ✕
       </button>
 
-      {/* Signal label + guidance — hidden during blink-off for instant transition */}
+      {/* Signal label + guidance — hidden during pulse-off for instant transition */}
       {textVisible && (
         <>
           <h1
@@ -157,7 +149,7 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
           className="absolute bottom-8 text-sm opacity-50"
           style={{ color: signal.textColor }}
         >
-          {mode === 'blinking' ? 'Tap to lock color' : 'Tap to go back'}
+          {mode === 'solid' ? 'Tap to pulse' : 'Tap to stop pulse'}
         </p>
       )}
     </div>
