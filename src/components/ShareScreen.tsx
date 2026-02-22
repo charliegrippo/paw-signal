@@ -8,9 +8,9 @@ interface ShareScreenProps {
   onBack: () => void
 }
 
-// The URL to share — uses the current page origin so it works in any deployment
+// The URL to share — includes the base path so it works on GitHub Pages subpaths
 function getShareUrl(): string {
-  return window.location.origin
+  return window.location.origin + import.meta.env.BASE_URL
 }
 
 const SHARE_TEXT =
