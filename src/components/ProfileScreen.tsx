@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { signals } from '../data/signals'
 import { loadProfile, saveProfile, type DogProfile } from '../data/profile'
+import { trackEvent } from '../utils/analytics'
 
 // ProfileScreen — lets the user edit their profile and default signal color
 // Owner first name, email, and phone are required; dog name is optional
@@ -40,6 +41,7 @@ export default function ProfileScreen({ onBack }: ProfileScreenProps) {
       return
     }
     saveProfile(profile)
+    trackEvent('profile_saved')
     setSaved(true)
   }
 

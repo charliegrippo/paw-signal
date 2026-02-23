@@ -8,14 +8,23 @@
       name="description"
       content="Show other dog walkers your dog's temperament from a distance with a simple full-screen color signal. Free, instant, works on any phone."
     />
-    <title>Paw Signal — Communicate Your Dog's Status at a Glance</title>
+    <title>CanWeSayHello — Communicate Your Dog's Status at a Glance</title>
     <link rel="icon" type="image/svg+xml" href="/paw-icon.svg" />
     <link rel="stylesheet" href="landing.css" />
+
+    <!-- Google Analytics 4 — Replace G-XXXXXXXXXX with your real Measurement ID -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
   </head>
   <body>
     <!-- Hero section — main pitch + call to action -->
     <section class="hero">
-      <h1>Paw Signal</h1>
+      <h1>CanWeSayHello</h1>
       <p class="tagline">
         Show other walkers your dog's temperament — from 50 yards away.
       </p>
@@ -31,7 +40,7 @@
       <div class="steps">
         <div class="step">
           <span class="step-number">1</span>
-          <p>Open Paw Signal on your phone</p>
+          <p>Open CanWeSayHello on your phone</p>
         </div>
         <div class="step">
           <span class="step-number">2</span>
@@ -94,6 +103,7 @@
         Sign Up Now
       </a>
       <p class="email-note">No spam. No account needed. Just a quick form.</p>
+      <a href="/paw-signal/" class="skip-link">Try it first — no signup needed</a>
     </section>
 
     <!-- Footer -->

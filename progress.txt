@@ -96,7 +96,7 @@
 - US-003 ✅ Basic Dog Profile
 - US-004 ✅ About / Color Guide Screen
 - US-005 ✅ Share Functionality
-- US-006 ⏭️ Analytics Integration (skipped for now)
+- US-006 ✅ Analytics Integration (GA4)
 - US-007 ✅ PWA (Progressive Web App) Support
 
 ## Session 3 - 2026-02-22
@@ -149,11 +149,197 @@
 - FIX 3 ✅ Profile Save Validation
 - NEW  ✅ Blinking Signal Mode
 
+### Setup Screen Redesign — COMPLETE
+- Added mission statement at top of setup screen
+- Changed form fields to: Owner's First Name (required), Email (required), Phone (required), Dog's Name (optional)
+- Continue button disabled until all 3 required fields are filled
+- On submit, data sent to Google Form via fetch (no-cors, fire-and-forget)
+- Profile saved locally and user proceeds to home screen
+- Removed breed field and signal color picker from setup (color picker stays on profile screen)
+- Updated ProfileScreen to match new profile fields
+- Updated hasProfile() to check ownerFirstName + email + phone
+
+### Bug Fix: Old Profile Crash — COMPLETE
+- Old profiles in localStorage (with breed but no ownerFirstName/email/phone) caused .trim() on undefined → black screen crash
+- Fixed loadProfile() to merge stored data with defaults so missing fields get empty strings
+- Fixed share URL to include /paw-signal/ base path (was sending users to 404)
+
+### V3 Task: Story Screen + About Redesign + Paw Logo — COMPLETE
+- Added user's paw logo (IMG_8876.JPG) as reusable PawIcon component (CSS inverted to white on dark bg)
+- PawIcon appears on StoryScreen (60px), HomeScreen (48px), AboutScreen (44px)
+- Created StoryScreen — full-screen "Our Story" page shown once before signup for first-time users
+  - Serif typography (Lora/Georgia), mission statement with bold highlights
+  - Four signal color dots, gradient divider, tagline, "Help Us Spread the Word" section
+  - Continue button proceeds to SetupScreen; never shown again
+- First-time flow updated: StoryScreen → SetupScreen → HomeScreen
+- Redesigned AboutScreen as a hub:
+  - Paw icon + condensed "Our Story" paragraph
+  - Action card with Feedback (mailto:charleygrippo@gmail.com) and Share (native share) buttons
+  - Expanded color guide with name, meaning, and "why this color" for all 4 signals
+
+### Bug Fix: Paw Logo White Box — COMPLETE
+- PawIcon was showing as a solid white rectangle instead of the paw silhouette
+- Root cause: `brightness(0) invert(1)` zeroed all pixels to black then inverted to all-white
+- Fix: changed to `filter: invert(1)` + `mix-blend-mode: screen` — inverts black paw to white and makes the black background transparent on dark surfaces
+
+### Files Created (Session 3)
+- CLAUDE.md — Project context for Claude Code
+- src/components/SetupScreen.tsx — First-time onboarding with Google Form submission
+- src/components/StoryScreen.tsx — "Our Story" page for first-time users
+- src/components/PawIcon.tsx — Reusable paw logo image component
+- public/assets/paw-logo.jpg — Paw logo image asset
+
+### Files Modified (Session 3)
+- src/App.tsx — Screen routing: story → setup → home flow, all screen navigation
+- src/data/profile.ts — Profile fields (ownerFirstName, email, phone, dogName), hasProfile(), safe loading
+- src/components/ProfileScreen.tsx — New profile fields, save validation
+- src/components/SignalScreen.tsx — Blinking mode + torch + close button
+- src/components/AboutScreen.tsx — Full redesign as story/feedback/share/color-guide hub
+- src/components/HomeScreen.tsx — PawIcon in header
+- src/components/ShareScreen.tsx — Fixed share URL, larger back button
+
+### Signal Screen: Solid Default + Tap-to-Toggle Pulse — COMPLETE
+- Signal screen now defaults to solid color (no more auto-blinking on entry)
+- Tap anywhere toggles pulse mode: screen flashes 1s on/off + camera flashlight blinks in sync
+- Tap again returns to solid with flashlight off
+- Camera permission only requested on first pulse activation (not on screen load)
+- ✕ button always goes home
+- Hint text updates: "Tap to pulse" / "Tap to stop pulse"
+
+### About Screen Reorder + Signal Modes Guide — COMPLETE
+- Reordered About screen: color guide on top, Our Story scrolls below
+- Added "Two Signal Modes" section between color guide and Our Story
+  - Solid Mode card: explains default full-screen color display
+  - Pulse Mode card: explains tap-to-pulse with flashlight sync
+  - Note about tapping to switch modes and ✕ to go home
+- Large font, dark card styling, clear plain-English explanations
+
+### Files Modified
+- src/components/SignalScreen.tsx — Solid default, tap-to-toggle pulse, lazy torch init
+- src/components/AboutScreen.tsx — Reordered layout, added signal modes explanation
+
+## Session 4 - 2026-02-22 — CanWeSayHello Redesign
+
+### TASK 1: Rebrand — Paw Signal → CanWeSayHello — COMPLETE
+- Replaced ALL user-facing "Paw Signal" references with "CanWeSayHello" across entire codebase
+- Updated: HomeScreen, ShareScreen, AboutScreen, SetupScreen, StoryScreen, PawIcon, index.html, landing page, vite.config.ts (Progressive Web App manifest), CLAUDE.md, package.json
+- Share URLs now reference canwesayhello.com
+- Progressive Web App (PWA) manifest name and short_name set to "CanWeSayHello"
+- localStorage key changed from 'paw-signal-profile' to 'canwesayhello-profile'
+- Technical paths (/paw-signal/ base URL) kept — tied to GitHub repo name
+
+### TASK 2: Nav Bar Overhaul — COMPLETE
+- Created PersonDogIcon.tsx — Scalable Vector Graphics (SVG) silhouette of person walking with dog
+- HomeScreen nav bar: person+dog logo (38px) top-left, icon buttons top-right
+- Right-side icons in order: Paw print (placeholder, 50% opacity) → Info (circle-i) → Share (upload arrow) → Settings (gear)
+- All nav icons are inline SVGs with 44x44px minimum tap targets
+- Nav bar pushed down 52px from top edge to clear phone notches
+- Replaced old emoji-based icons with clean SVG icons
+
+### TASK 3: Signal Screen Icons — COMPLETE
+- Created SignalIcons.tsx with 4 inline SVG icon components:
+  - SmileyIcon (Green/Friendly) — circle face with dot eyes and curved smile
+  - WarningIcon (Yellow/Caution) — triangle with exclamation mark
+  - ShieldStarIcon (Blue/Working) — shield with star inside
+  - NoSymbolIcon (Red/Do Not Approach) — circle with diagonal line
+  - getSignalIcon() helper returns correct component for a signal ID
+- Signal screen: 160px icon centered above label text
+- Home screen buttons: 75px icon above label (buttons use column layout)
+
+### TASK 4: Flash Feature — COMPLETE
+- Full-width "Flash to Get Attention" button at bottom of every signal screen
+- Subtext: "Shake phone or press this button"
+- When active: "Tap to Stop" with subtext "Shake phone or tap anywhere to stop"
+- Flash animation: screen pulses between signal color and black over 1-second intervals
+- Camera flashlight (torch) blinks in sync when device supports it
+- Shake detection via Device Motion Application Programming Interface (API) with 25g threshold and 800ms debounce
+- Three ways to stop flash: shake again, tap button, tap anywhere on screen
+- Camera permission only requested on first flash activation
+
+### TASK 5: Color Guide Page Updates — COMPLETE
+- Renamed "Pulse Mode" → "Flash Mode" on About screen
+- Renamed "Solid Mode" → "Steady Mode"
+- Steady Mode description: "Your signal stays solid. Use this when someone is already heading your way..."
+- Flash Mode description: "Need to catch someone's attention from across a field or down a trail?..."
+- Updated footer note to reference back arrow instead of ✕ button
+
+### TASK 6: Home Screen Updates — COMPLETE
+- Person+dog logo (60px) centered above "CanWeSayHello" title
+- "Signaling for [dog name]" shows when dog name is set
+- Helper text "Tap a color to display your signal" in muted color below greeting
+- Each color button shows its icon (75px) above the label (done in Task 3)
+
+### TASK 7: Signal Screen Back Button — COMPLETE
+- Back arrow (chevron left SVG) in top-left of every signal screen
+- 44x44px circular button with semi-transparent dark background (bg-black/30)
+- Pushed down 52px from top edge for phone notch clearance
+- Returns to home screen on tap
+
+### Skip Signup / Try It First — COMPLETE
+- Landing page: added "Try it first — no signup needed" link below the Google Form signup button
+- Link goes directly to /paw-signal/ (the app) without requiring form submission
+- SetupScreen: added "Skip for now — try it first" button below Continue
+- Skip saves a minimal guest profile (Guest/skip/skip) so hasProfile() passes
+- App works fully without signing up — all signals, flash, sharing available
+- Styled as muted underlined text on both landing page and setup screen
+- landing/landing.css updated with .skip-link styles
+
+### Files Created (Session 4)
+- src/components/PersonDogIcon.tsx — SVG person walking with dog (logo/home button)
+- src/components/SignalIcons.tsx — 4 signal SVG icons + getSignalIcon() helper
+
+### Files Modified (Session 4)
+- src/components/HomeScreen.tsx — New nav bar, centered logo, icon buttons, signal button icons, helper text
+- src/components/SignalScreen.tsx — Flash feature, shake detection, back arrow button, signal icons
+- src/components/AboutScreen.tsx — Rebrand, Steady/Flash mode descriptions
+- src/components/ShareScreen.tsx — Rebrand, canwesayhello.com share URL
+- src/components/SetupScreen.tsx — Rebrand, skip signup flow
+- src/components/StoryScreen.tsx — Rebrand
+- src/components/PawIcon.tsx — Rebrand alt text
+- src/data/signals.ts — Rebrand comment
+- src/data/profile.ts — Rebrand localStorage key
+- index.html — Rebrand title
+- landing/index.html — Rebrand title, heading, step text, skip signup link
+- landing/landing.css — Skip link styles
+- vite.config.ts — Rebrand PWA manifest name/short_name
+- package.json — Rebrand package name
+- CLAUDE.md — Rebrand project description
+
 ## To Redeploy
 Run: npm run deploy
 
 ## Next Steps
 - Test live URLs on phone
+- Verify shake detection works on mobile devices
+- Verify Google Form receives submissions
 - Share with users for feedback
-- Add analytics (US-006) when ready
+### US-006: Google Analytics 4 (GA4) Integration — COMPLETE
+- Created src/utils/analytics.ts — thin wrapper around window.gtag() with trackPageView() and trackEvent()
+- Added GA4 script tag to index.html (React app) with placeholder Measurement ID (G-XXXXXXXXXX)
+- Added GA4 script tag to landing/index.html (standalone landing page) with same placeholder ID
+- Virtual pageview tracking in App.tsx — fires on every screen change via useEffect watching screen state
+- Signal screen pageviews include color (e.g. signal/green)
+- Custom events tracked:
+  - signal_selected — when user taps a signal color (includes signal_color + signal_label)
+  - flash_activated — when user activates flash mode (includes signal_color)
+  - profile_saved — when user saves profile
+  - setup_completed — when user finishes onboarding form
+  - setup_skipped — when user taps "skip for now"
+  - share_triggered — when user shares via native share or copies link (includes method)
+- All analytics calls gracefully no-op if gtag isn't loaded (ad blockers, dev mode)
+- To activate: replace G-XXXXXXXXXX with real Measurement ID in 3 places (analytics.ts, index.html, landing/index.html)
+
+### Files Created
+- src/utils/analytics.ts — GA4 helper (trackPageView, trackEvent)
+
+### Files Modified
+- index.html — GA4 script tag
+- landing/index.html — GA4 script tag
+- src/App.tsx — screen view tracking + signal_selected event
+- src/components/SignalScreen.tsx — flash_activated event
+- src/components/SetupScreen.tsx — setup_completed + setup_skipped events
+- src/components/ProfileScreen.tsx — profile_saved event
+- src/components/ShareScreen.tsx — share_triggered event
+- src/components/HomeScreen.tsx — fixed unused dogName param (pre-existing TS error)
+
 ---

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { saveProfile, type DogProfile } from '../data/profile'
+import { trackEvent } from '../utils/analytics'
 
 // SetupScreen — first-time onboarding with mission statement and signup form
 // Collects owner info + optional dog name, submits to Google Form, then proceeds to app
@@ -40,6 +41,20 @@ export default function SetupScreen({ onComplete }: SetupScreenProps) {
     }
   }
 
+  // Skip signup — save a minimal guest profile so the app works fully
+  function handleSkip() {
+    trackEvent('setup_skipped')
+    const guestProfile: DogProfile = {
+      ownerFirstName: 'Guest',
+      email: 'skip',
+      phone: 'skip',
+      dogName: '',
+      defaultSignalId: 'green',
+    }
+    saveProfile(guestProfile)
+    onComplete()
+  }
+
   async function handleContinue() {
     if (!formValid) {
       setShowErrors(true)
@@ -71,6 +86,7 @@ export default function SetupScreen({ onComplete }: SetupScreenProps) {
 
     // Save profile locally and proceed regardless of form submission result
     saveProfile(profile)
+    trackEvent('setup_completed')
     onComplete()
   }
 
@@ -86,13 +102,13 @@ export default function SetupScreen({ onComplete }: SetupScreenProps) {
       {/* Welcome header */}
       <div className="mb-4">
         <h1 className="text-3xl font-bold text-white tracking-tight">
-          Welcome to Paw Signal
+          Welcome to CanWeSayHello
         </h1>
       </div>
 
       {/* Mission statement */}
       <p className="text-gray-400 text-sm italic leading-relaxed mb-8">
-        Paw Signal was born from loss. The creator of this app lost his dog to a
+        CanWeSayHello was born from loss. The creator of this app lost his dog to a
         sudden dog-on-dog attack — no warning signs, no way to know. No one
         should ever experience that. This app exists so every walker can see
         what's coming and every dog gets the space they need. One color. One
@@ -184,6 +200,14 @@ export default function SetupScreen({ onComplete }: SetupScreenProps) {
         }`}
       >
         {submitting ? 'Saving…' : 'Continue'}
+      </button>
+
+      {/* Skip link — lets users try the app without signing up */}
+      <button
+        onClick={handleSkip}
+        className="mt-3 mb-2 text-gray-500 text-sm bg-transparent border-none cursor-pointer underline"
+      >
+        Skip for now — try it first
       </button>
     </div>
   )

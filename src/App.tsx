@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import HomeScreen from './components/HomeScreen'
 import SignalScreen from './components/SignalScreen'
 import ProfileScreen from './components/ProfileScreen'
@@ -8,6 +8,7 @@ import SetupScreen from './components/SetupScreen'
 import StoryScreen from './components/StoryScreen'
 import type { Signal } from './data/signals'
 import { loadProfile, hasProfile } from './data/profile'
+import { trackPageView, trackEvent } from './utils/analytics'
 
 // App — manages navigation between screens
 // First-time users see: StoryScreen → SetupScreen → HomeScreen
@@ -25,6 +26,14 @@ function App() {
   // Load dog name for the home screen greeting
   const [dogName, setDogName] = useState(() => loadProfile().dogName)
 
+  // Track virtual pageviews when screen changes
+  useEffect(() => {
+    const pageName = screen === 'signal' && activeSignal
+      ? `signal/${activeSignal.id}`
+      : screen
+    trackPageView(pageName)
+  }, [screen, activeSignal])
+
   // Story screen Continue → proceed to setup
   const handleStoryContinue = useCallback(() => {
     setScreen('setup')
@@ -38,6 +47,7 @@ function App() {
 
   // User tapped a signal button — show the full-screen color
   const handleSelectSignal = useCallback((signal: Signal) => {
+    trackEvent('signal_selected', { signal_color: signal.id, signal_label: signal.label })
     setActiveSignal(signal)
     setScreen('signal')
   }, [])

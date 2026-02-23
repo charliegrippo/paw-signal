@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
+import { trackEvent } from '../utils/analytics'
 
 // ShareScreen — lets the user share the app via native Web Share API (Application Programming Interface)
 // Falls back to a copyable link and QR code when Web Share is not available
@@ -8,13 +9,13 @@ interface ShareScreenProps {
   onBack: () => void
 }
 
-// The URL to share — includes the base path so it works on GitHub Pages subpaths
+// The URL to share — points to the CanWeSayHello domain
 function getShareUrl(): string {
-  return window.location.origin + import.meta.env.BASE_URL
+  return 'https://canwesayhello.com'
 }
 
 const SHARE_TEXT =
-  'Check out Paw Signal — a quick way to show your dog\'s temperament to other walkers!'
+  'Check out CanWeSayHello — a quick way to show your dog\'s temperament to other walkers!'
 
 export default function ShareScreen({ onBack }: ShareScreenProps) {
   const [copied, setCopied] = useState(false)
@@ -27,10 +28,11 @@ export default function ShareScreen({ onBack }: ShareScreenProps) {
   async function handleNativeShare() {
     try {
       await navigator.share({
-        title: 'Paw Signal',
+        title: 'CanWeSayHello',
         text: SHARE_TEXT,
         url: shareUrl,
       })
+      trackEvent('share_triggered', { method: 'native_share' })
     } catch {
       // User cancelled or share failed — no action needed
     }
@@ -40,6 +42,7 @@ export default function ShareScreen({ onBack }: ShareScreenProps) {
   async function handleCopyLink() {
     try {
       await navigator.clipboard.writeText(shareUrl)
+      trackEvent('share_triggered', { method: 'copy_link' })
       setCopied(true)
       // Reset "Copied!" label after 2 seconds
       setTimeout(() => setCopied(false), 2000)
@@ -63,11 +66,11 @@ export default function ShareScreen({ onBack }: ShareScreenProps) {
         >
           ←
         </button>
-        <h1 className="text-2xl font-bold text-white">Share Paw Signal</h1>
+        <h1 className="text-2xl font-bold text-white">Share CanWeSayHello</h1>
       </div>
 
       <p className="text-gray-400 text-sm mb-8">
-        Spread the word! Share Paw Signal with other dog owners so they can
+        Spread the word! Share CanWeSayHello with other dog owners so they can
         signal their dog's temperament too.
       </p>
 
