@@ -32,6 +32,13 @@ export default function HomeScreen({ onSelectSignal, onOpenProfile, onOpenAbout,
         </div>
         <div className="flex items-center gap-1">
           <button
+            onClick={onOpenAbout}
+            className="text-gray-400 text-xl bg-transparent border-none cursor-pointer p-2"
+            aria-label="About &amp; color guide"
+          >
+            ℹ
+          </button>
+          <button
             onClick={onOpenShare}
             className="text-gray-400 text-xl bg-transparent border-none cursor-pointer p-2"
             aria-label="Share Paw Signal"
@@ -77,7 +84,7 @@ export default function HomeScreen({ onSelectSignal, onOpenProfile, onOpenAbout,
         ))}
       </div>
 
-      {/* Color guide link at the bottom */}
+      {/* Color guide link at the bottom — secondary access point */}
       <button
         onClick={onOpenAbout}
         className="mt-4 text-gray-400 text-sm bg-transparent border-none cursor-pointer underline"
