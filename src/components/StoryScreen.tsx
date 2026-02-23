@@ -43,7 +43,7 @@ export default function StoryScreen({ onContinue }: StoryScreenProps) {
         className="mt-2 text-center uppercase"
         style={{ fontSize: 12, color: '#666', letterSpacing: 2 }}
       >
-        Why Paw Signal Exists
+        Why CanWeSayHello Exists
       </p>
 
       {/* Gradient divider using all 4 signal colors */}
@@ -59,7 +59,7 @@ export default function StoryScreen({ onContinue }: StoryScreenProps) {
       {/* Story paragraphs */}
       <div className="mt-6 max-w-sm text-center" style={{ fontFamily: 'Lora, Georgia, serif' }}>
         <p style={{ fontSize: 15, color: '#cccccc' }}>
-          Paw Signal was{' '}
+          CanWeSayHello was{' '}
           <span className="font-semibold text-white">born from loss.</span>
         </p>
 

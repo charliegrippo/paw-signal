@@ -10,7 +10,7 @@ export default function PawIcon({ size = 48, className = '' }: PawIconProps) {
   return (
     <img
       src={import.meta.env.BASE_URL + 'assets/paw-logo.jpg'}
-      alt="Paw Signal"
+      alt="CanWeSayHello"
       width={size}
       height={size}
       className={className}

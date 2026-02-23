@@ -1,4 +1,4 @@
-// Signal definitions — the 4 core color statuses for Paw Signal
+// Signal definitions — the 4 core color statuses for CanWeSayHello
 // Each signal has a color, label, meaning, and guidance text
 
 export interface Signal {

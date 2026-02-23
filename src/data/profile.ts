@@ -1,7 +1,7 @@
 // Dog profile — stores the dog's name and default signal color
 // Data persists in localStorage so it survives page reloads and app restarts
 
-const STORAGE_KEY = 'paw-signal-profile'
+const STORAGE_KEY = 'canwesayhello-profile'
 
 export interface DogProfile {
   ownerFirstName: string

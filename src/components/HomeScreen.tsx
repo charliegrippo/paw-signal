@@ -1,5 +1,5 @@
 import { signals, type Signal } from '../data/signals'
-import PersonDogIcon from './PersonDogIcon'
+import PawIcon from './PawIcon'
 import { getSignalIcon } from './SignalIcons'
 
 // HomeScreen — displays the logo, 4 signal color buttons, and navigation
@@ -11,24 +11,6 @@ interface HomeScreenProps {
   onOpenAbout: () => void
   onOpenShare: () => void
   dogName: string
-}
-
-// Paw print SVG icon — realistic paw: 4 toe pads in arc + large main pad
-function PawPrintIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      {/* Main pad — large rounded shape at bottom */}
-      <path d="M6.5 15 Q6 12 8 11 L10.5 10 Q12 9.5 13.5 10 L16 11 Q18 12 17.5 15 Q17 17.5 15 19 Q13.5 20.5 12 20.5 Q10.5 20.5 9 19 Q7 17.5 6.5 15 Z" />
-      {/* Toe pad — far left */}
-      <ellipse cx="5.5" cy="9" rx="2" ry="2.5" transform="rotate(-15 5.5 9)" />
-      {/* Toe pad — inner left */}
-      <ellipse cx="9" cy="6" rx="1.8" ry="2.5" transform="rotate(-5 9 6)" />
-      {/* Toe pad — inner right */}
-      <ellipse cx="15" cy="6" rx="1.8" ry="2.5" transform="rotate(5 15 6)" />
-      {/* Toe pad — far right */}
-      <ellipse cx="18.5" cy="9" rx="2" ry="2.5" transform="rotate(15 18.5 9)" />
-    </svg>
-  )
 }
 
 // Info icon — circle with "i"
@@ -66,21 +48,28 @@ function GearIcon() {
 export default function HomeScreen({ onSelectSignal, onOpenProfile, onOpenAbout, onOpenShare, dogName: _dogName }: HomeScreenProps) {
   return (
     <div className="flex flex-col h-full w-full px-6 pb-8" style={{ paddingTop: 52 }}>
-      {/* Nav bar — logo left, icon buttons right */}
+      {/* Nav bar — bench icon left, action buttons right */}
       <div className="flex items-center justify-between mb-6">
-        {/* Left: Person+dog logo as home button */}
-        <div className="w-11 h-11 flex items-center justify-center">
-          <PersonDogIcon size={38} />
+        {/* Left: Bench icon (person sitting with dog) — 200% larger */}
+        <div className="w-20 h-20 flex items-center justify-center">
+          <img
+            src={import.meta.env.BASE_URL + 'assets/bench-icon.jpg'}
+            alt="CanWeSayHello"
+            width={76}
+            height={76}
+            style={{
+              filter: 'invert(1)',
+              mixBlendMode: 'screen',
+              objectFit: 'contain',
+            }}
+          />
         </div>
 
-        {/* Right: Paw (placeholder) → Info → Share → Settings */}
+        {/* Right: Paw → Info → Share → Settings */}
         <div className="flex items-center gap-0.5">
-          {/* Paw print icon */}
-          <div
-            className="w-11 h-11 flex items-center justify-center text-white"
-            aria-label="Paw print"
-          >
-            <PawPrintIcon />
+          {/* Paw logo */}
+          <div className="w-11 h-11 flex items-center justify-center">
+            <PawIcon size={28} />
           </div>
 
           {/* Info / About button */}
@@ -112,7 +101,7 @@ export default function HomeScreen({ onSelectSignal, onOpenProfile, onOpenAbout,
         </div>
       </div>
 
-      {/* App title + greeting — no logo here, it's in the nav bar */}
+      {/* App title + helper text — centered */}
       <div className="flex flex-col items-center mb-4">
         <h1 className="text-3xl font-bold text-white tracking-tight">
           CanWeSayHello

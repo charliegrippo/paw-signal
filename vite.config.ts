@@ -17,8 +17,8 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
       },
       manifest: {
-        name: 'Paw Signal',
-        short_name: 'Paw Signal',
+        name: 'CanWeSayHello',
+        short_name: 'CanWeSayHello',
         description:
           'Communicate your dog\'s temperament to other walkers at a distance',
         theme_color: '#1a1a2e',
@@ -28,15 +28,21 @@ export default defineConfig({
         start_url: '/paw-signal/',
         icons: [
           {
-            src: '/paw-icon.svg',
-            sizes: 'any',
-            type: 'image/svg+xml',
+            src: 'icon-192.png',
+            sizes: '192x192',
+            type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/paw-icon.svg',
-            sizes: 'any',
-            type: 'image/svg+xml',
+            src: 'icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
             purpose: 'maskable',
           },
         ],

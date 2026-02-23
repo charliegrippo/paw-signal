@@ -35,13 +35,13 @@ const colorGuide = [
 ]
 
 // Share the app via native share API or clipboard fallback
-const SHARE_URL = 'https://charliegrippo.github.io/paw-signal/landing/'
-const SHARE_TEXT = "Check out Paw Signal — a quick way to show your dog's temperament to other walkers!"
+const SHARE_URL = 'https://canwesayhello.com'
+const SHARE_TEXT = "Check out CanWeSayHello — a quick way to show your dog's temperament to other walkers!"
 
 async function handleShare() {
   if (typeof navigator.share === 'function') {
     try {
-      await navigator.share({ title: 'Paw Signal', text: SHARE_TEXT, url: SHARE_URL })
+      await navigator.share({ title: 'CanWeSayHello', text: SHARE_TEXT, url: SHARE_URL })
     } catch {
       // User cancelled
     }
@@ -56,7 +56,7 @@ async function handleShare() {
 }
 
 function handleFeedback() {
-  window.location.href = 'mailto:charleygrippo@gmail.com?subject=Paw%20Signal%20Feedback'
+  window.location.href = 'mailto:charleygrippo@gmail.com?subject=CanWeSayHello%20Feedback'
 }
 
 export default function AboutScreen({ onBack }: AboutScreenProps) {
@@ -128,10 +128,10 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
         style={{ backgroundColor: '#1e1e1e', border: '1px solid #2a2a2a' }}
       >
         <p className="text-white font-bold text-lg mb-1">
-          Solid Mode
+          Steady Mode
         </p>
         <p style={{ fontSize: 15, color: '#cccccc' }}>
-          Your screen fills with the signal color. Hold your phone up so the other walker can see it clearly. This is the default when you tap a color.
+          Your signal stays solid. Use this when someone is already heading your way — the color tells them what to expect from your dog at a glance.
         </p>
       </div>
 
@@ -140,15 +140,15 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
         style={{ backgroundColor: '#1e1e1e', border: '1px solid #2a2a2a' }}
       >
         <p className="text-white font-bold text-lg mb-1">
-          Pulse Mode
+          Flash Mode
         </p>
         <p style={{ fontSize: 15, color: '#cccccc' }}>
-          Tap the screen to start pulsing. The color flashes on and off while your camera flashlight blinks in sync — visible from a distance. Tap again to stop.
+          Need to catch someone's attention from across a field or down a trail? Shake your phone or press the Flash to Get Attention button. Your screen will pulse on and off — much easier to spot at a distance. Shake again, tap the button, or tap anywhere on screen to stop.
         </p>
       </div>
 
       <p className="text-center mb-6" style={{ fontSize: 14, color: '#888' }}>
-        Tap anywhere on the signal screen to switch between modes. Use the ✕ button to go back home.
+        Use the back arrow to return to the home screen.
       </p>
 
       {/* Divider */}
@@ -166,7 +166,7 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
         className="text-center mb-3 max-w-sm mx-auto"
         style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 14, color: '#bbbbbb' }}
       >
-        Paw Signal was <span className="font-semibold text-white">born from loss.</span>{' '}
+        CanWeSayHello was <span className="font-semibold text-white">born from loss.</span>{' '}
         The creator of this app lost his dog to a sudden dog&#8209;on&#8209;dog attack — no
         warning signs, no way to know.{' '}
         <span className="font-semibold text-white">No one should ever experience that.</span>{' '}

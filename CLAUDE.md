@@ -2,12 +2,13 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## What Is Paw Signal
+## What Is CanWeSayHello
 
-A mobile-first PWA for dog walkers to display a full-screen color signal (green/yellow/blue/red) communicating their dog's temperament to others nearby. Built with React 19, TypeScript, Vite, and Tailwind CSS.
+A mobile-first Progressive Web App (PWA) for dog walkers to display a full-screen color signal (green/yellow/blue/red) communicating their dog's temperament to others nearby. Built with React 19, TypeScript, Vite, and Tailwind CSS (Cascading Style Sheets).
 
 **Live:** `https://charliegrippo.github.io/paw-signal/`
 **Landing page:** `https://charliegrippo.github.io/paw-signal/landing/`
+**Domain:** `https://canwesayhello.com`
 
 ## Commands
 
@@ -27,7 +28,7 @@ Deploy runs `predeploy` automatically (builds app, copies `landing/` into `dist/
 
 **Signal data** is defined in `src/data/signals.ts` — four signal objects with `id`, `label`, `hex`, `meaning`, `guidance`, and `textColor` fields.
 
-**Persistence** uses localStorage via `src/data/profile.ts` (key: `paw-signal-profile`). The `DogProfile` stores `dogName` and `defaultSignalId`. Profile auto-saves on change via `useEffect`.
+**Persistence** uses localStorage via `src/data/profile.ts` (key: `canwesayhello-profile`). The `DogProfile` stores `dogName` and `defaultSignalId`. Profile auto-saves on change via `useEffect`.
 
 **Styling** is Tailwind for layout/spacing/text, with inline styles for dynamic signal colors (`backgroundColor: signal.hex`).
 
@@ -48,4 +49,4 @@ Deploy runs `predeploy` automatically (builds app, copies `landing/` into `dist/
 
 ## Pending Work
 
-See `paw-signal-task-sheet.md` for upcoming fixes and features (forced profile flow for first-time users, profile save validation, blinking signal mode).
+See `paw-signal-task-sheet.md` for previous task history. Current redesign tasks are tracked in the user's session instructions.
