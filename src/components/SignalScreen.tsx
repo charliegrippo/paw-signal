@@ -3,17 +3,9 @@ import type { Signal } from '../data/signals'
 import { getSignalIcon } from './SignalIcons'
 import { trackEvent } from '../utils/analytics'
 
-// SignalScreen — full-screen signal display with flash feature
-// Defaults to solid (steady) mode. Flash can be triggered by:
-//   1. Tapping the "Flash to Get Attention" button at the bottom
-//   2. Shaking the phone (Device Motion API)
-// Flash stops via: shake again, tap button, or tap anywhere on screen.
+// SignalScreen — full-screen signal display with tap-to-cycle controls
+// Tap cycle: solid → pulse (screen flashes + torch) → solid → home
 // Back arrow in top-left always returns to home.
-
-// Shake detection threshold — acceleration magnitude above this triggers a shake
-const SHAKE_THRESHOLD = 25
-// Minimum time (ms) between shake triggers to prevent rapid toggling
-const SHAKE_DEBOUNCE_MS = 800
 
 interface SignalScreenProps {
   signal: Signal
@@ -21,8 +13,8 @@ interface SignalScreenProps {
 }
 
 export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
-  // 'solid' = steady color, 'flash' = screen pulses opacity on/off
-  const [mode, setMode] = useState<'solid' | 'flash'>('solid')
+  // Three-state tap cycle: solid-initial → flash → solid-done (next tap goes home)
+  const [mode, setMode] = useState<'solid-initial' | 'flash' | 'solid-done'>('solid-initial')
   // Whether the signal color is showing (true) or faded to black (false) during flash
   const [colorOn, setColorOn] = useState(true)
 
@@ -30,11 +22,6 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
   const intervalRef = useRef<number | null>(null)
   // Track whether we've already requested camera access
   const torchInitialized = useRef(false)
-  // Debounce shake events
-  const lastShakeTime = useRef(0)
-  // Ref to current mode so the shake handler can read it without stale closure
-  const modeRef = useRef(mode)
-  modeRef.current = mode
 
   // Toggle the camera torch on or off (fire-and-forget)
   const setTorch = useCallback(async (on: boolean) => {
@@ -73,7 +60,7 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
     }
   }, [])
 
-  // Flash loop — toggles color and torch every 1 second
+  // Flash loop — toggles color and torch every 1 second when in flash mode
   useEffect(() => {
     if (mode !== 'flash') {
       // Solid mode — lock color on, torch off
@@ -106,51 +93,21 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
     }
   }, [mode, setTorch, initTorch])
 
-  // Shake detection via Device Motion API (Application Programming Interface)
-  useEffect(() => {
-    function handleMotion(event: DeviceMotionEvent) {
-      const acc = event.accelerationIncludingGravity
-      if (!acc) return
-      const { x, y, z } = acc
-      if (x === null || y === null || z === null) return
-
-      // Calculate total acceleration magnitude
-      const magnitude = Math.sqrt(x * x + y * y + z * z)
-
-      if (magnitude > SHAKE_THRESHOLD) {
-        const now = Date.now()
-        if (now - lastShakeTime.current < SHAKE_DEBOUNCE_MS) return
-        lastShakeTime.current = now
-        // Toggle flash mode
-        setMode((prev) => (prev === 'solid' ? 'flash' : 'solid'))
-      }
-    }
-
-    window.addEventListener('devicemotion', handleMotion)
-    return () => window.removeEventListener('devicemotion', handleMotion)
-  }, [])
-
-  // Start flash mode
-  function startFlash() {
-    trackEvent('flash_activated', { signal_color: signal.id })
-    setMode('flash')
-  }
-
-  // Stop flash mode
-  function stopFlash() {
-    setMode('solid')
-  }
-
-  // Tap on the screen background — only stops flash (doesn't start it)
+  // Tap anywhere on screen cycles through: solid-initial → flash → solid-done → home
   function handleScreenTap() {
-    if (mode === 'flash') {
-      stopFlash()
+    if (mode === 'solid-initial') {
+      trackEvent('flash_activated', { signal_color: signal.id })
+      setMode('flash')
+    } else if (mode === 'flash') {
+      setMode('solid-done')
+    } else {
+      onBack()
     }
   }
 
   // During flash-off, show black; otherwise show signal color
   const bgColor = mode === 'flash' && !colorOn ? '#000000' : signal.hex
-  const textVisible = mode === 'solid' || colorOn
+  const textVisible = mode !== 'flash' || colorOn
 
   return (
     <div
@@ -162,7 +119,7 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') handleScreenTap()
       }}
-      aria-label={`${signal.label} signal. ${mode === 'flash' ? 'Tap anywhere to stop flash.' : ''}`}
+      aria-label={`${signal.label} signal. ${mode === 'solid-initial' ? 'Tap to pulse.' : mode === 'flash' ? 'Tap to stop pulse.' : 'Tap to go home.'}`}
     >
       {/* Back button — top-left, chevron left in dark circle */}
       <button
@@ -204,50 +161,19 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
         </>
       )}
 
-      {/* Flash button — full width at bottom of screen */}
+      {/* Hint text at bottom — tells user what next tap does */}
       {textVisible && (
-        <div className="absolute bottom-0 left-0 right-0 px-6 pb-8">
-          {mode === 'solid' ? (
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                startFlash()
-              }}
-              className="w-full py-4 rounded-xl font-bold text-lg border-none cursor-pointer active:scale-[0.98] transition-transform"
-              style={{
-                backgroundColor: 'rgba(0,0,0,0.35)',
-                color: signal.textColor,
-              }}
-            >
-              Flash to Get Attention
-              <span
-                className="block text-xs font-normal mt-1 opacity-70"
-                style={{ color: signal.textColor }}
-              >
-                Shake phone or press this button
-              </span>
-            </button>
-          ) : (
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                stopFlash()
-              }}
-              className="w-full py-4 rounded-xl font-bold text-lg border-none cursor-pointer active:scale-[0.98] transition-transform"
-              style={{
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                color: signal.textColor,
-              }}
-            >
-              Tap to Stop
-              <span
-                className="block text-xs font-normal mt-1 opacity-70"
-                style={{ color: signal.textColor }}
-              >
-                Shake phone or tap anywhere to stop
-              </span>
-            </button>
-          )}
+        <div className="absolute bottom-0 left-0 right-0 px-6 pb-8 text-center">
+          <p
+            className="text-sm font-medium opacity-70"
+            style={{ color: signal.textColor }}
+          >
+            {mode === 'solid-initial'
+              ? 'Tap anywhere to pulse'
+              : mode === 'flash'
+              ? 'Tap anywhere to stop pulse'
+              : 'Tap anywhere to go home'}
+          </p>
         </div>
       )}
     </div>

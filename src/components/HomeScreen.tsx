@@ -47,9 +47,9 @@ function GearIcon() {
 
 export default function HomeScreen({ onSelectSignal, onOpenProfile, onOpenAbout, onOpenShare, dogName: _dogName }: HomeScreenProps) {
   return (
-    <div className="flex flex-col h-full w-full px-6 pb-8" style={{ paddingTop: 52 }}>
+    <div className="flex flex-col h-full w-full px-6 pb-4" style={{ paddingTop: 40 }}>
       {/* Nav bar — bench icon left, action buttons right */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-2">
         {/* Left: Bench icon (person sitting with dog) — 200% larger */}
         <div className="w-20 h-20 flex items-center justify-center">
           <img
@@ -102,17 +102,17 @@ export default function HomeScreen({ onSelectSignal, onOpenProfile, onOpenAbout,
       </div>
 
       {/* App title + helper text — centered */}
-      <div className="flex flex-col items-center mb-4">
+      <div className="flex flex-col items-center mb-1">
         <h1 className="text-3xl font-bold text-white tracking-tight">
           CanWeSayHello
         </h1>
-        <p className="text-gray-500 mt-1 text-xs">
+        <p className="text-gray-500 mt-0 text-xs">
           Tap a color to display your signal
         </p>
       </div>
 
       {/* Signal buttons — each one fills available space evenly, with icon above label */}
-      <div className="flex flex-col gap-4 flex-1">
+      <div className="flex flex-col gap-2.5 flex-1">
         {signals.map((signal) => {
           const IconComponent = getSignalIcon(signal.id)
           return (
@@ -141,7 +141,7 @@ export default function HomeScreen({ onSelectSignal, onOpenProfile, onOpenAbout,
       {/* Color guide link at the bottom — secondary access point */}
       <button
         onClick={onOpenAbout}
-        className="mt-4 text-gray-400 text-sm bg-transparent border-none cursor-pointer underline"
+        className="mt-2 text-gray-400 text-sm bg-transparent border-none cursor-pointer underline"
         aria-label="Open color guide"
       >
         What do the colors mean?

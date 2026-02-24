@@ -342,4 +342,27 @@ Run: npm run deploy
 - src/components/ShareScreen.tsx — share_triggered event
 - src/components/HomeScreen.tsx — fixed unused dogName param (pre-existing TS error)
 
+## Session 5 - 2026-02-24
+
+### Home Screen Spacing Fix — COMPLETE
+- Reduced top padding (52px → 40px), nav bar margin (mb-6 → mb-2), title margin (mb-4 → mb-1)
+- Reduced title-to-subtitle gap (mt-1 → mt-0), button gap (gap-4 → gap-2.5)
+- Reduced bottom padding (pb-8 → pb-4) and bottom link margin (mt-4 → mt-2)
+- All 4 signal buttons now fully visible on iPhone without scrolling (~86px reclaimed)
+
+### Remove Shake Detection, Tap-Only Signal Controls — COMPLETE
+- Removed ALL shake/deviceMotion detection code (constants, refs, event listener)
+- Signal screen now uses a 3-state tap cycle:
+  - Tap 1: solid → pulse mode (screen flashes + camera torch if permitted)
+  - Tap 2: pulse → solid (flash stops, torch off)
+  - Tap 3: solid → return to home screen
+- Back arrow button in top-left still works at any time
+- Camera flash permission still only requested on first pulse activation (unchanged)
+- Replaced bottom "Flash to Get Attention" / "Tap to Stop" buttons with simple hint text
+- Hint text updates per state: "Tap anywhere to pulse" / "Tap anywhere to stop pulse" / "Tap anywhere to go home"
+
+### Files Modified (Session 5)
+- src/components/HomeScreen.tsx — Spacing/padding reductions for mobile fit
+- src/components/SignalScreen.tsx — Removed shake detection, tap-only 3-state cycle
+
 ---
