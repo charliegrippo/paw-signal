@@ -70,9 +70,9 @@ function ColoredAppName() {
 
 export default function AboutScreen({ onBack }: AboutScreenProps) {
   return (
-    <div className="flex flex-col h-full w-full px-6 py-8 overflow-y-auto">
+    <div className="flex flex-col h-full w-full px-6 py-6 overflow-y-auto">
       {/* Header — back button + bench icon on left */}
-      <div className="flex items-center mb-6">
+      <div className="flex items-center mb-3">
         <button
           onClick={onBack}
           className="w-11 h-11 flex items-center justify-center rounded-full bg-white/10 text-white text-lg border-none cursor-pointer mr-3"
@@ -91,7 +91,7 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
 
       {/* ===== HELP SPREAD THE WORD (top section) ===== */}
       <div
-        className="rounded-[14px] px-5 py-6 mb-6 text-center"
+        className="rounded-[14px] px-5 py-4 mb-4 text-center"
         style={{
           background: 'linear-gradient(135deg, #2E7D32 0%, #1565C0 100%)',
         }}
@@ -99,12 +99,12 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
         <p className="text-white font-bold text-xl mb-2">
           Help Spread The Word
         </p>
-        <p className="text-white/80 text-sm mb-4">
+        <p className="text-white/80 text-sm mb-3">
           Please share <ColoredAppName /> with one person
         </p>
         <button
           onClick={handleShare}
-          className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white text-[#1a1a2e] font-bold text-base border-none cursor-pointer active:scale-[0.98] transition-transform"
+          className="inline-flex items-center gap-2 px-8 py-2.5 rounded-full bg-white text-[#1a1a2e] font-bold text-base border-none cursor-pointer active:scale-[0.98] transition-transform"
         >
           <span>↗</span> Share the App
         </button>
@@ -112,22 +112,22 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
 
       {/* ===== COLOR GUIDE ===== */}
       <p
-        className="text-center uppercase mb-5"
+        className="text-center uppercase mb-3"
         style={{ fontSize: 12, color: '#666', letterSpacing: 1.5 }}
       >
         Color Guide
       </p>
 
-      <div className="flex flex-col gap-4 mb-6">
+      <div className="flex flex-col gap-2.5 mb-6">
         {colorGuide.map((entry) => (
           <div key={entry.hex} className="flex gap-3">
             {/* Color swatch */}
             <div
               className="shrink-0"
               style={{
-                width: 40,
-                height: 40,
-                borderRadius: 10,
+                width: 32,
+                height: 32,
+                borderRadius: 8,
                 backgroundColor: entry.hex,
               }}
             />
