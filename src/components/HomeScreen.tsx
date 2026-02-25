@@ -107,7 +107,7 @@ export default function HomeScreen({ onSelectSignal, onOpenProfile, onOpenAbout,
           CanWeSayHello
         </h1>
         <p className="text-gray-500 mt-0 text-xs">
-          Tap a color to display your signal
+          Tap a color that best describes your dog's temperament
         </p>
       </div>
 
