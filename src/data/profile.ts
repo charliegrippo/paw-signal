@@ -20,13 +20,23 @@ const emptyProfile: DogProfile = {
   defaultSignalId: 'green',
 }
 
+// Clean up legacy placeholder values from old app defaults
+function cleanLegacyValues(profile: DogProfile): DogProfile {
+  return {
+    ...profile,
+    ownerFirstName: profile.ownerFirstName === 'Guest' ? '' : profile.ownerFirstName,
+    email: profile.email === 'skip' ? '' : profile.email,
+    phone: profile.phone === 'skip' ? '' : profile.phone,
+  }
+}
+
 // Load profile from localStorage, returning empty profile if nothing saved
 export function loadProfile(): DogProfile {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) {
       // Merge with defaults so old profiles missing new fields don't crash
-      return { ...emptyProfile, ...JSON.parse(stored) }
+      return cleanLegacyValues({ ...emptyProfile, ...JSON.parse(stored) })
     }
   } catch {
     // If localStorage is corrupted, start fresh
