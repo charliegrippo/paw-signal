@@ -127,14 +127,8 @@ export default function ShareScreen({ onBack }: ShareScreenProps) {
             bgColor="#ffffff"
           />
         </div>
-      </div>
-
-      {/* Divider */}
-      <div className="w-full my-6" style={{ height: 1, backgroundColor: '#2a2a2a' }} />
-
-      {/* Give Us Feedback */}
-      <div className="flex flex-col items-center">
-        <p className="text-gray-400 text-sm mb-2">Have thoughts or suggestions?</p>
+        {/* Give Us Feedback — directly under QR code */}
+        <p className="text-gray-400 text-sm mb-2 mt-6">Have thoughts or suggestions?</p>
         <a
           href="mailto:charleygrippo@gmail.com?subject=CanWeSayHello%20Feedback"
           className="text-white underline text-sm"

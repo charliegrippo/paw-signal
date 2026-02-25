@@ -49,7 +49,7 @@ export default function AboutScreen({ onBack, onOpenShare }: AboutScreenProps) {
 
       {/* ===== HELP SPREAD THE WORD (top section) ===== */}
       <div
-        className="rounded-[14px] px-5 py-4 mb-4"
+        className="rounded-[14px] px-5 py-4 mb-4 text-center"
         style={{
           background: 'linear-gradient(135deg, #2E7D32 0%, #1565C0 100%)',
         }}
