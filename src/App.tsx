@@ -4,17 +4,16 @@ import SignalScreen from './components/SignalScreen'
 import ProfileScreen from './components/ProfileScreen'
 import AboutScreen from './components/AboutScreen'
 import ShareScreen from './components/ShareScreen'
-import SetupScreen from './components/SetupScreen'
 import StoryScreen from './components/StoryScreen'
 import { signals, type Signal } from './data/signals'
 import { loadProfile, hasProfile } from './data/profile'
 import { trackPageView, trackEvent } from './utils/analytics'
 
 // App — manages navigation between screens
-// First-time users see: StoryScreen → SetupScreen → HomeScreen
+// First-time users see: StoryScreen → ProfileScreen → HomeScreen
 // Returning users go straight to HomeScreen
 
-type Screen = 'story' | 'setup' | 'home' | 'signal' | 'profile' | 'about' | 'share'
+type Screen = 'story' | 'home' | 'signal' | 'profile' | 'about' | 'share'
 
 function App() {
   const profileExists = hasProfile()
@@ -34,15 +33,9 @@ function App() {
     trackPageView(pageName)
   }, [screen, activeSignal])
 
-  // Story screen Continue → proceed to setup
+  // Story screen Continue → proceed to profile screen
   const handleStoryContinue = useCallback(() => {
-    setScreen('setup')
-  }, [])
-
-  // Setup complete — save happened in SetupScreen, now go to home
-  const handleSetupComplete = useCallback(() => {
-    setDogName(loadProfile().dogName)
-    setScreen('home')
+    setScreen('profile')
   }, [])
 
   // User tapped a signal button — show the full-screen color
@@ -102,8 +95,6 @@ function App() {
     <div className="h-full w-full">
       {screen === 'story' ? (
         <StoryScreen onContinue={handleStoryContinue} />
-      ) : screen === 'setup' ? (
-        <SetupScreen onComplete={handleSetupComplete} />
       ) : screen === 'signal' && activeSignal ? (
         <SignalScreen signal={activeSignal} onBack={handleBackFromSignal} />
       ) : screen === 'profile' ? (
