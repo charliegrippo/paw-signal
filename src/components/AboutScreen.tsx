@@ -1,4 +1,4 @@
-// AboutScreen — color guide, signal modes, then Help Spread The Word section
+// AboutScreen — Help Spread The Word on top, then color guide, then signal modes
 
 interface AboutScreenProps {
   onBack: () => void
@@ -53,10 +53,13 @@ async function handleShare() {
   }
 }
 
-// Colored app name — each word in its signal color
+// Colored app name with white pill background for legibility on bright backgrounds
 function ColoredAppName() {
   return (
-    <span className="font-bold">
+    <span
+      className="inline-block font-bold rounded-full px-3 py-1"
+      style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
+    >
       <span style={{ color: '#2E7D32' }}>Can</span>
       <span style={{ color: '#F9A825' }}>We</span>
       <span style={{ color: '#1565C0' }}>Say</span>
@@ -68,7 +71,7 @@ function ColoredAppName() {
 export default function AboutScreen({ onBack }: AboutScreenProps) {
   return (
     <div className="flex flex-col h-full w-full px-6 py-8 overflow-y-auto">
-      {/* Back button (44x44 touch target) */}
+      {/* Header — back button + bench icon on left */}
       <div className="flex items-center mb-6">
         <button
           onClick={onBack}
@@ -77,17 +80,34 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
         >
           ←
         </button>
-      </div>
-
-      {/* Bench icon (person sitting with dog) centered */}
-      <div className="flex justify-center mb-4">
         <img
           src={import.meta.env.BASE_URL + 'assets/bench-icon.jpg'}
           alt="CanWeSayHello"
-          width={52}
-          height={52}
+          width={44}
+          height={44}
           style={{ filter: 'invert(1)', mixBlendMode: 'screen', objectFit: 'contain' }}
         />
+      </div>
+
+      {/* ===== HELP SPREAD THE WORD (top section) ===== */}
+      <div
+        className="rounded-[14px] px-5 py-6 mb-6 text-center"
+        style={{
+          background: 'linear-gradient(135deg, #2E7D32 0%, #1565C0 100%)',
+        }}
+      >
+        <p className="text-white font-bold text-xl mb-2">
+          Help Spread The Word
+        </p>
+        <p className="text-white/80 text-sm mb-4">
+          Please share <ColoredAppName /> with one person
+        </p>
+        <button
+          onClick={handleShare}
+          className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white text-[#1a1a2e] font-bold text-base border-none cursor-pointer active:scale-[0.98] transition-transform"
+        >
+          <span>↗</span> Share the App
+        </button>
       </div>
 
       {/* ===== COLOR GUIDE ===== */}
@@ -162,30 +182,6 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
       <p className="text-center mb-6" style={{ fontSize: 14, color: '#888' }}>
         Use the back arrow to return to the home screen.
       </p>
-
-      {/* Divider */}
-      <div className="w-full mb-6" style={{ height: 1, backgroundColor: '#2a2a2a' }} />
-
-      {/* ===== HELP SPREAD THE WORD ===== */}
-      <div
-        className="rounded-[14px] px-5 py-6 mb-6 text-center"
-        style={{
-          background: 'linear-gradient(135deg, #2E7D32 0%, #1565C0 100%)',
-        }}
-      >
-        <p className="text-white font-bold text-xl mb-2">
-          Help Spread The Word
-        </p>
-        <p className="text-white/80 text-sm mb-4">
-          Please share <ColoredAppName /> with one person
-        </p>
-        <button
-          onClick={handleShare}
-          className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white text-[#1a1a2e] font-bold text-base border-none cursor-pointer active:scale-[0.98] transition-transform"
-        >
-          <span>↗</span> Share the App
-        </button>
-      </div>
     </div>
   )
 }
