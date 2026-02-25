@@ -66,7 +66,13 @@ export default function ShareScreen({ onBack }: ShareScreenProps) {
         >
           ←
         </button>
-        <h1 className="text-2xl font-bold text-white">Share CanWeSayHello</h1>
+        <h1 className="text-2xl font-bold text-white">
+          Share{' '}
+          <span style={{ color: '#2E7D32' }}>Can</span>
+          <span style={{ color: '#F9A825' }}>We</span>
+          <span style={{ color: '#1565C0' }}>Say</span>
+          <span style={{ color: '#C62828' }}>Hello</span>
+        </h1>
       </div>
 
       <p className="text-gray-400 text-sm mb-8">
@@ -128,12 +134,12 @@ export default function ShareScreen({ onBack }: ShareScreenProps) {
 
       {/* Give Us Feedback */}
       <div className="flex flex-col items-center">
-        <p className="text-gray-400 text-sm mb-3">Have thoughts or suggestions?</p>
+        <p className="text-gray-400 text-sm mb-2">Have thoughts or suggestions?</p>
         <a
           href="mailto:charleygrippo@gmail.com?subject=CanWeSayHello%20Feedback"
-          className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white/10 text-white font-bold text-base no-underline active:scale-[0.98] transition-transform"
+          className="text-white underline text-sm"
         >
-          <span>✉</span> Give Us Feedback
+          charleygrippo@gmail.com
         </a>
       </div>
     </div>
