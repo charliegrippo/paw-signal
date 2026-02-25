@@ -1,6 +1,4 @@
-import PawIcon from './PawIcon'
-
-// AboutScreen — Our Story on top, then color guide, then signal modes explanation
+// AboutScreen — color guide, signal modes, then Help Spread The Word section
 
 interface AboutScreenProps {
   onBack: () => void
@@ -55,8 +53,16 @@ async function handleShare() {
   }
 }
 
-function handleFeedback() {
-  window.location.href = 'mailto:charleygrippo@gmail.com?subject=CanWeSayHello%20Feedback'
+// Colored app name — each word in its signal color
+function ColoredAppName() {
+  return (
+    <span className="font-bold">
+      <span style={{ color: '#2E7D32' }}>Can</span>
+      <span style={{ color: '#F9A825' }}>We</span>
+      <span style={{ color: '#1565C0' }}>Say</span>
+      <span style={{ color: '#C62828' }}>Hello</span>
+    </span>
+  )
 }
 
 export default function AboutScreen({ onBack }: AboutScreenProps) {
@@ -73,41 +79,16 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
         </button>
       </div>
 
-      {/* Paw icon centered */}
+      {/* Bench icon (person sitting with dog) centered */}
       <div className="flex justify-center mb-4">
-        <PawIcon size={44} />
+        <img
+          src={import.meta.env.BASE_URL + 'assets/bench-icon.jpg'}
+          alt="CanWeSayHello"
+          width={52}
+          height={52}
+          style={{ filter: 'invert(1)', mixBlendMode: 'screen', objectFit: 'contain' }}
+        />
       </div>
-
-      {/* ===== OUR STORY (top section) ===== */}
-      <h2
-        className="text-center font-bold text-white mb-3"
-        style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 22 }}
-      >
-        Our Story
-      </h2>
-
-      <p
-        className="text-center mb-3 max-w-sm mx-auto"
-        style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 14, color: '#bbbbbb' }}
-      >
-        CanWeSayHello was <span className="font-semibold text-white">born from loss.</span>{' '}
-        The creator of this app lost his dog to a sudden dog&#8209;on&#8209;dog attack — no
-        warning signs, no way to know.{' '}
-        <span className="font-semibold text-white">No one should ever experience that.</span>{' '}
-        This app exists so every walker can see what's coming and every dog gets the space they need.
-      </p>
-
-      <p
-        className="text-center italic text-white mb-6"
-        style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 15 }}
-      >
-        One color. One signal.
-        <br />
-        A safer walk for everyone.
-      </p>
-
-      {/* Divider */}
-      <div className="w-full mb-6" style={{ height: 1, backgroundColor: '#2a2a2a' }} />
 
       {/* ===== COLOR GUIDE ===== */}
       <p
@@ -182,33 +163,28 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
         Use the back arrow to return to the home screen.
       </p>
 
-      {/* Action card — feedback + share */}
+      {/* Divider */}
+      <div className="w-full mb-6" style={{ height: 1, backgroundColor: '#2a2a2a' }} />
+
+      {/* ===== HELP SPREAD THE WORD ===== */}
       <div
-        className="rounded-[14px] px-5 py-4 mb-6"
-        style={{ backgroundColor: '#1e1e1e', border: '1px solid #2a2a2a' }}
+        className="rounded-[14px] px-5 py-6 mb-6 text-center"
+        style={{
+          background: 'linear-gradient(135deg, #2E7D32 0%, #1565C0 100%)',
+        }}
       >
-        <p
-          className="uppercase mb-3"
-          style={{ fontSize: 12, color: '#888', letterSpacing: 1.5 }}
-        >
-          Help Us Spread the Word
+        <p className="text-white font-bold text-xl mb-2">
+          Help Spread The Word
         </p>
-        <div className="flex gap-3">
-          {/* Feedback button */}
-          <button
-            onClick={handleFeedback}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-full bg-white/10 text-white text-sm font-semibold border-none cursor-pointer active:scale-[0.98] transition-transform"
-          >
-            <span>✉</span> Feedback
-          </button>
-          {/* Share button */}
-          <button
-            onClick={handleShare}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-full bg-white/10 text-white text-sm font-semibold border-none cursor-pointer active:scale-[0.98] transition-transform"
-          >
-            <span>↗</span> Share
-          </button>
-        </div>
+        <p className="text-white/80 text-sm mb-4">
+          Please share <ColoredAppName /> with one person
+        </p>
+        <button
+          onClick={handleShare}
+          className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white text-[#1a1a2e] font-bold text-base border-none cursor-pointer active:scale-[0.98] transition-transform"
+        >
+          <span>↗</span> Share the App
+        </button>
       </div>
     </div>
   )
