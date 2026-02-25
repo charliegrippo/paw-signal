@@ -1,6 +1,6 @@
 import PawIcon from './PawIcon'
 
-// AboutScreen — hub with color guide on top, signal modes explanation, then Our Story below
+// AboutScreen — Our Story on top, then color guide, then signal modes explanation
 
 interface AboutScreenProps {
   onBack: () => void
@@ -78,7 +78,38 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
         <PawIcon size={44} />
       </div>
 
-      {/* ===== COLOR GUIDE (top section) ===== */}
+      {/* ===== OUR STORY (top section) ===== */}
+      <h2
+        className="text-center font-bold text-white mb-3"
+        style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 22 }}
+      >
+        Our Story
+      </h2>
+
+      <p
+        className="text-center mb-3 max-w-sm mx-auto"
+        style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 14, color: '#bbbbbb' }}
+      >
+        CanWeSayHello was <span className="font-semibold text-white">born from loss.</span>{' '}
+        The creator of this app lost his dog to a sudden dog&#8209;on&#8209;dog attack — no
+        warning signs, no way to know.{' '}
+        <span className="font-semibold text-white">No one should ever experience that.</span>{' '}
+        This app exists so every walker can see what's coming and every dog gets the space they need.
+      </p>
+
+      <p
+        className="text-center italic text-white mb-6"
+        style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 15 }}
+      >
+        One color. One signal.
+        <br />
+        A safer walk for everyone.
+      </p>
+
+      {/* Divider */}
+      <div className="w-full mb-6" style={{ height: 1, backgroundColor: '#2a2a2a' }} />
+
+      {/* ===== COLOR GUIDE ===== */}
       <p
         className="text-center uppercase mb-5"
         style={{ fontSize: 12, color: '#666', letterSpacing: 1.5 }}
@@ -143,43 +174,12 @@ export default function AboutScreen({ onBack }: AboutScreenProps) {
           Flash Mode
         </p>
         <p style={{ fontSize: 15, color: '#cccccc' }}>
-          Need to catch someone's attention from across a field or down a trail? Shake your phone or press the Flash to Get Attention button. Your screen will pulse on and off — much easier to spot at a distance. Shake again, tap the button, or tap anywhere on screen to stop.
+          Need to catch someone's attention from across a field or down a trail? Press the Flash to Get Attention button. Your screen will pulse on and off — much easier to spot at a distance. Tap the button or tap anywhere on screen to stop.
         </p>
       </div>
 
       <p className="text-center mb-6" style={{ fontSize: 14, color: '#888' }}>
         Use the back arrow to return to the home screen.
-      </p>
-
-      {/* Divider */}
-      <div className="w-full mb-6" style={{ height: 1, backgroundColor: '#2a2a2a' }} />
-
-      {/* ===== OUR STORY (scrolls below) ===== */}
-      <h2
-        className="text-center font-bold text-white mb-3"
-        style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 22 }}
-      >
-        Our Story
-      </h2>
-
-      <p
-        className="text-center mb-3 max-w-sm mx-auto"
-        style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 14, color: '#bbbbbb' }}
-      >
-        CanWeSayHello was <span className="font-semibold text-white">born from loss.</span>{' '}
-        The creator of this app lost his dog to a sudden dog&#8209;on&#8209;dog attack — no
-        warning signs, no way to know.{' '}
-        <span className="font-semibold text-white">No one should ever experience that.</span>{' '}
-        This app exists so every walker can see what's coming and every dog gets the space they need.
-      </p>
-
-      <p
-        className="text-center italic text-white mb-6"
-        style={{ fontFamily: 'Lora, Georgia, serif', fontSize: 15 }}
-      >
-        One color. One signal.
-        <br />
-        A safer walk for everyone.
       </p>
 
       {/* Action card — feedback + share */}
