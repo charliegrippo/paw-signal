@@ -64,10 +64,10 @@ export default function AboutScreen({ onBack, onOpenShare }: AboutScreenProps) {
             style={{ filter: 'invert(1)', mixBlendMode: 'screen', objectFit: 'contain' }}
           />
         </div>
-        <p className="text-white font-bold text-xl mb-1">
+        <p className="text-white font-bold text-2xl mb-1 text-center">
           Help Spread The Word
         </p>
-        <p className="text-white font-bold text-xl mb-3">
+        <p className="text-white font-bold text-3xl mb-3 text-center">
           Please share with 1 person.
         </p>
         <button
