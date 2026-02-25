@@ -100,7 +100,7 @@ function App() {
       ) : screen === 'profile' ? (
         <ProfileScreen onBack={handleBackFromProfile} onSaveAndGoToSignal={handleSaveAndGoToSignal} />
       ) : screen === 'about' ? (
-        <AboutScreen onBack={handleBackFromAbout} />
+        <AboutScreen onBack={handleBackFromAbout} onOpenShare={handleOpenShare} />
       ) : screen === 'share' ? (
         <ShareScreen onBack={handleBackFromShare} />
       ) : (

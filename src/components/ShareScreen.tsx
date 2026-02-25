@@ -122,6 +122,20 @@ export default function ShareScreen({ onBack }: ShareScreenProps) {
           />
         </div>
       </div>
+
+      {/* Divider */}
+      <div className="w-full my-6" style={{ height: 1, backgroundColor: '#2a2a2a' }} />
+
+      {/* Give Us Feedback */}
+      <div className="flex flex-col items-center">
+        <p className="text-gray-400 text-sm mb-3">Have thoughts or suggestions?</p>
+        <a
+          href="mailto:charleygrippo@gmail.com?subject=CanWeSayHello%20Feedback"
+          className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white/10 text-white font-bold text-base no-underline active:scale-[0.98] transition-transform"
+        >
+          <span>✉</span> Give Us Feedback
+        </a>
+      </div>
     </div>
   )
 }

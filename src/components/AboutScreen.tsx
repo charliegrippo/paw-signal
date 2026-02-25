@@ -2,6 +2,7 @@
 
 interface AboutScreenProps {
   onBack: () => void
+  onOpenShare: () => void
 }
 
 // Color guide data with expanded descriptions
@@ -32,78 +33,45 @@ const colorGuide = [
   },
 ]
 
-// Share the app via native share API or clipboard fallback
-const SHARE_URL = 'https://canwesayhello.com'
-const SHARE_TEXT = "Check out CanWeSayHello — a quick way to show your dog's temperament to other walkers!"
-
-async function handleShare() {
-  if (typeof navigator.share === 'function') {
-    try {
-      await navigator.share({ title: 'CanWeSayHello', text: SHARE_TEXT, url: SHARE_URL })
-    } catch {
-      // User cancelled
-    }
-  } else {
-    try {
-      await navigator.clipboard.writeText(SHARE_URL)
-      alert('Link copied to clipboard!')
-    } catch {
-      // Clipboard not available
-    }
-  }
-}
-
-// Colored app name with white pill background for legibility on bright backgrounds
-function ColoredAppName() {
-  return (
-    <span
-      className="inline-block font-bold rounded-full px-3 py-1"
-      style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}
-    >
-      <span style={{ color: '#2E7D32' }}>Can</span>
-      <span style={{ color: '#F9A825' }}>We</span>
-      <span style={{ color: '#1565C0' }}>Say</span>
-      <span style={{ color: '#C62828' }}>Hello</span>
-    </span>
-  )
-}
-
-export default function AboutScreen({ onBack }: AboutScreenProps) {
+export default function AboutScreen({ onBack, onOpenShare }: AboutScreenProps) {
   return (
     <div className="flex flex-col h-full w-full px-6 py-6 overflow-y-auto">
-      {/* Header — back button + bench icon on left */}
+      {/* Header — back button */}
       <div className="flex items-center mb-3">
         <button
           onClick={onBack}
-          className="w-11 h-11 flex items-center justify-center rounded-full bg-white/10 text-white text-lg border-none cursor-pointer mr-3"
+          className="w-11 h-11 flex items-center justify-center rounded-full bg-white/10 text-white text-lg border-none cursor-pointer"
           aria-label="Go back to home"
         >
           ←
         </button>
-        <img
-          src={import.meta.env.BASE_URL + 'assets/bench-icon.jpg'}
-          alt="CanWeSayHello"
-          width={44}
-          height={44}
-          style={{ filter: 'invert(1)', mixBlendMode: 'screen', objectFit: 'contain' }}
-        />
       </div>
 
       {/* ===== HELP SPREAD THE WORD (top section) ===== */}
       <div
-        className="rounded-[14px] px-5 py-4 mb-4 text-center"
+        className="rounded-[14px] px-5 py-4 mb-4"
         style={{
           background: 'linear-gradient(135deg, #2E7D32 0%, #1565C0 100%)',
         }}
       >
-        <p className="text-white font-bold text-xl mb-2">
+        {/* Bench icon top-left inside the box */}
+        <div className="mb-3">
+          <img
+            src={import.meta.env.BASE_URL + 'assets/bench-icon.jpg'}
+            alt="CanWeSayHello"
+            width={36}
+            height={36}
+            style={{ filter: 'invert(1)', mixBlendMode: 'screen', objectFit: 'contain' }}
+          />
+        </div>
+        <p className="text-white font-bold text-xl mb-1">
           Help Spread The Word
         </p>
-        <p className="text-white/80 text-sm mb-3">
-          Please share <ColoredAppName /> with one person
+        <p className="text-white font-bold text-xl mb-3">
+          Please share with 1 person.
         </p>
         <button
-          onClick={handleShare}
+          onClick={onOpenShare}
           className="inline-flex items-center gap-2 px-8 py-2.5 rounded-full bg-white text-[#1a1a2e] font-bold text-base border-none cursor-pointer active:scale-[0.98] transition-transform"
         >
           <span>↗</span> Share the App
