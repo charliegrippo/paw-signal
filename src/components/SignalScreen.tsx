@@ -60,7 +60,7 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
     }
   }, [])
 
-  // Flash loop — toggles color and torch every 1 second when in flash mode
+  // Flash loop — toggles color and torch every 500ms when in flash mode
   useEffect(() => {
     if (mode !== 'flash') {
       // Solid mode — lock color on, torch off
@@ -83,7 +83,7 @@ export default function SignalScreen({ signal, onBack }: SignalScreenProps) {
       on = !on
       setColorOn(on)
       setTorch(on)
-    }, 1000)
+    }, 500)
 
     return () => {
       if (intervalRef.current !== null) {
