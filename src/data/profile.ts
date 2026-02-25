@@ -39,12 +39,12 @@ export function saveProfile(profile: DogProfile): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(profile))
 }
 
-// Check if a valid profile exists (owner first name, email, phone are required)
+// Check if a valid profile exists (owner first name, email, dog name are required)
 export function hasProfile(): boolean {
   const profile = loadProfile()
   return (
     profile.ownerFirstName.trim().length > 0 &&
     profile.email.trim().length > 0 &&
-    profile.phone.trim().length > 0
+    profile.dogName.trim().length > 0
   )
 }

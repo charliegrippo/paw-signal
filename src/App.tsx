@@ -6,7 +6,7 @@ import AboutScreen from './components/AboutScreen'
 import ShareScreen from './components/ShareScreen'
 import SetupScreen from './components/SetupScreen'
 import StoryScreen from './components/StoryScreen'
-import type { Signal } from './data/signals'
+import { signals, type Signal } from './data/signals'
 import { loadProfile, hasProfile } from './data/profile'
 import { trackPageView, trackEvent } from './utils/analytics'
 
@@ -69,6 +69,15 @@ function App() {
     setScreen('home')
   }, [])
 
+  // User saved profile and wants to go straight to their signal
+  const handleSaveAndGoToSignal = useCallback((signalId: string) => {
+    setDogName(loadProfile().dogName)
+    const signal = signals.find((s) => s.id === signalId) || signals[0]
+    trackEvent('signal_selected', { signal_color: signal.id, signal_label: signal.label })
+    setActiveSignal(signal)
+    setScreen('signal')
+  }, [])
+
   // User opened about / color guide screen
   const handleOpenAbout = useCallback(() => {
     setScreen('about')
@@ -98,7 +107,7 @@ function App() {
       ) : screen === 'signal' && activeSignal ? (
         <SignalScreen signal={activeSignal} onBack={handleBackFromSignal} />
       ) : screen === 'profile' ? (
-        <ProfileScreen onBack={handleBackFromProfile} />
+        <ProfileScreen onBack={handleBackFromProfile} onSaveAndGoToSignal={handleSaveAndGoToSignal} />
       ) : screen === 'about' ? (
         <AboutScreen onBack={handleBackFromAbout} />
       ) : screen === 'share' ? (
