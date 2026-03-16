@@ -14,15 +14,15 @@ export const signals: Signal[] = [
   {
     id: 'green',
     label: 'Friendly',
-    hex: '#2E7D32',
+    hex: '#00FF00',
     meaning: 'Social and generally okay with people and dogs.',
     guidance: 'Ask, then friendly greeting is fine.',
-    textColor: '#ffffff',
+    textColor: '#1a1a2e',
   },
   {
     id: 'yellow',
     label: 'Caution / Quirks',
-    hex: '#F9A825',
+    hex: '#FFFF00',
     meaning:
       'May react to big dogs, kids, fast movement, or has specific triggers.',
     guidance: 'Ask specifics. Slow intro. Avoid surprises.',
@@ -31,7 +31,7 @@ export const signals: Signal[] = [
   {
     id: 'blue',
     label: 'Working / In Training',
-    hex: '#1565C0',
+    hex: '#0080FF',
     meaning: 'Service, police, military, or serious training focus.',
     guidance: 'Do not distract. No interaction.',
     textColor: '#ffffff',
@@ -39,7 +39,7 @@ export const signals: Signal[] = [
   {
     id: 'red',
     label: 'Do Not Approach',
-    hex: '#C62828',
+    hex: '#FF0000',
     meaning: 'High arousal, reactive, or unsafe with strangers/dogs.',
     guidance: 'Give space. No petting. No greetings.',
     textColor: '#ffffff',
