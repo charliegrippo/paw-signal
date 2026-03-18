@@ -1,1 +1,1 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/paw-signal/sw.js', { scope: '/paw-signal/' })})}
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/walksignal/sw.js', { scope: '/walksignal/' })})}
